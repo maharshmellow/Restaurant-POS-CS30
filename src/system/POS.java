@@ -39,8 +39,7 @@ public class POS {
 		
 		
 		
-		Employee employee = new Employee();
-		employee.showScreen();
+				
 		
 		Manager manager = new Manager();
 		manager.showScreen();

@@ -4,20 +4,27 @@ import java.awt.Color;
 import java.awt.Font;
 import java.awt.event.ActionEvent;
 import java.awt.event.ActionListener;
-import java.util.Arrays;
+import java.util.ArrayList;
+import java.util.List;
 
+import javax.swing.BorderFactory;
 import javax.swing.JButton;
 import javax.swing.JFrame;
-import javax.swing.JOptionPane;
 import javax.swing.JPanel;
 import javax.swing.JPasswordField;
 import javax.swing.UIManager;
 import javax.swing.UnsupportedLookAndFeelException;
+import javax.swing.border.BevelBorder;
+
+import people.Employee;
 
 public class LoginManager implements ActionListener{
-		
+	
+	public List<String> employeePins = new ArrayList();
 	public static JPasswordField passwordField;
 	public static String password = "";
+	
+	JFrame loginFrame;
 	
 	public void showLoginScreen(){
 		
@@ -35,7 +42,7 @@ public class LoginManager implements ActionListener{
 	    }
 		
 		//Initializes the frame and the panel
-		JFrame loginFrame = new JFrame("Starbucks Login");		
+		loginFrame = new JFrame("Starbucks Login");		
 		JPanel loginPanel = new JPanel();
 		
 		//Allows absolute positioning to occur
@@ -228,14 +235,48 @@ public class LoginManager implements ActionListener{
 		}
 		
 		if ("ENTER_KEY".equals(command)){
-			System.out.println("Enter Pressed");
-			System.out.println(passwordField.getPassword());
+			//Check Password 
+			checkPassword();
+			
 		}
 		
 	}
 	
-	
-	public static void logout(){
+	public void checkPassword(){
+		boolean loginSuccess = false;
+		int employeeIndex = 0; 
+		
+		employeePins.add("1066");
+		
+		for (int i = 0; i < employeePins.size(); i++){
+			if (password.equals(employeePins.get(i))){
+				
+				loginSuccess = true;	// 
+				employeeIndex = i;	// Sets the employeeIndex - will be used when calling the login function
+				break;		//Breaks the loop
+							
+			}			
+		}
+		if (loginSuccess){
+			//Correct Login
+			loginFrame.dispose();
+			login(employeeIndex);
+		}else{
+			//Incorrect Login
+			System.out.println("Incorrect Login");
+			passwordField.setBorder(BorderFactory.createMatteBorder(2, 2, 2, 2, Color.RED));
+			 
+		}
+		
+
+	}
+	public void login(int employeeIndex){
+		// Show the employee menu - start the timer of hours worked
+		long epoch = System.currentTimeMillis();
+		//Employee.showScreen(employeeIndex, epoch);
+		System.out.println(epoch);
+	}
+	public void logout(){
 		//Saves all information and displays the login screen after an employee logs out 
 		
 	}
