@@ -74,7 +74,7 @@ public class DatabaseManager{
 			ResultSet items = sqlState.executeQuery(showItems);
 			while(items.next()){
 				System.out.println(items.getString("Item Name") + " " + items.getString("Price"));
-			}
+			} 
 						
 			//Close the loading frame 
 			loadingFrame.dispose();
