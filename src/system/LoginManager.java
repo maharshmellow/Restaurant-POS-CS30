@@ -230,7 +230,7 @@ public class LoginManager implements ActionListener{
 		}
 		
 		else if ("BACK_KEY".equals(command)){
-			if (password.length() >= 0){
+			if (password.length() > 0){
 				//If the password field is not empty - remove the last element from the field 
 				password = password.substring(0, password.length()-1);
 				passwordField.setText(password);

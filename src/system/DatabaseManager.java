@@ -1,5 +1,8 @@
 package system;
-
+import people.Employee; 
+import items.Drinks;
+import items.Food;
+import items.Products;
 
 import java.sql.Connection;
 import java.sql.DriverManager;
@@ -12,7 +15,8 @@ import javax.swing.JLabel;
 import javax.swing.JPanel;
 import javax.swing.UIManager;
 import javax.swing.UnsupportedLookAndFeelException;
-public class DatabaseManager{
+
+public class DatabaseManager extends Employee{
 	public static void connectToDatabase(){
 		try {
 	        UIManager.setLookAndFeel(UIManager.getSystemLookAndFeelClassName());
@@ -59,25 +63,49 @@ public class DatabaseManager{
 			ResultSet employees = sqlState.executeQuery(showEmployees);
 			while(employees.next()){
 				System.out.println(employees.getString("Name") + " " + employees.getString("Salary") + " " + employees.getString("Hours Worked") + " " + employees.getString("Pin"));
+				Employee.names.add(employees.getString("Name"));
+				Employee.salary.add(Double.parseDouble(employees.getString("Salary")));
+				Employee.hours.add(Double.parseDouble(employees.getString("Hours Worked")));
+				Employee.pins.add(Integer.parseInt(employees.getString("Pin")));
+				
+				
 			}
 			
 			ResultSet drinks = sqlState.executeQuery(showDrinks);
 			while(drinks.next()){
 				System.out.println(drinks.getString("Drink Name") + " " + drinks.getString("Price"));
+				Drinks.names.add(drinks.getString("Drink Name"));
+				Drinks.prices.add(Double.parseDouble(drinks.getString("Price")));
 			}
 			
 			ResultSet food = sqlState.executeQuery(showFood);
 			while(food.next()){
 				System.out.println(food.getString("Food Name") + " " + food.getString("Price"));
+				Food.names.add(food.getString("Food Name"));
+				Food.prices.add(Double.parseDouble(food.getString("Price")));
+				
+				
 			}
 			
 			ResultSet items = sqlState.executeQuery(showItems);
 			while(items.next()){
 				System.out.println(items.getString("Item Name") + " " + items.getString("Price"));
+				Products.names.add(items.getString("Item Name"));
+				Products.prices.add(Double.parseDouble(items.getString("Price")));
 			} 
 						
 			//Close the loading frame 
 			loadingFrame.dispose();
+			System.out.println(Employee.names);
+			System.out.println(Employee.hours);
+			System.out.println(Employee.salary);
+			System.out.println(Employee.pins);
+			System.out.println(Drinks.names);
+			System.out.println(Drinks.prices);
+			System.out.println(Food.names);
+			System.out.println(Food.prices);
+			System.out.println(Products.names);
+			System.out.println(Products.prices);
 			
 		}
 		
