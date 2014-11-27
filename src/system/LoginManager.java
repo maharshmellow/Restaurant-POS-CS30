@@ -230,8 +230,15 @@ public class LoginManager implements ActionListener{
 		}
 		
 		else if ("BACK_KEY".equals(command)){
-			password = password.substring(0, password.length()-1);
-			passwordField.setText(password);
+			if (password.length() >= 0){
+				//If the password field is not empty - remove the last element from the field 
+				password = password.substring(0, password.length()-1);
+				passwordField.setText(password);
+			}
+			else{
+				//The password is empty - cannot backspace from nothing
+			}
+			
 		}
 		
 		if ("ENTER_KEY".equals(command)){

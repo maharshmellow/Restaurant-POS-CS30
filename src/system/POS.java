@@ -18,7 +18,7 @@ public class POS {
 	}
 	public static void initialize(){
 		//Initialize the employees, admin, sales - all information from text files
-		fileManager = new FileManager();
+		//fileManager = new FileManager();
 		
 		
 		databaseManager = new DatabaseManager();
