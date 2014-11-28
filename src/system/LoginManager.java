@@ -253,10 +253,10 @@ public class LoginManager implements ActionListener{
 		boolean loginSuccess = false;
 		int employeeIndex = 0; 
 		
-		employeePins.add("1066");
+		//employeePins.add("1066");
 		
-		for (int i = 0; i < employeePins.size(); i++){
-			if (password.equals(employeePins.get(i))){
+		for (int i = 0; i < Employee.pins.size(); i++){
+			if (Integer.parseInt(password)  == Employee.pins.get(i)){
 				
 				loginSuccess = true;	// 
 				employeeIndex = i;	// Sets the employeeIndex - will be used when calling the login function
@@ -267,7 +267,10 @@ public class LoginManager implements ActionListener{
 		if (loginSuccess){
 			//Correct Login
 			loginFrame.dispose();
+			System.out.println("Employee Index: " + employeeIndex);
+			System.out.println("Employee Name: " + Employee.names.get(employeeIndex));
 			login(employeeIndex);
+			
 		}else{
 			//Incorrect Login
 			System.out.println("Incorrect Login");
@@ -280,8 +283,9 @@ public class LoginManager implements ActionListener{
 	public void login(int employeeIndex){
 		// Show the employee menu - start the timer of hours worked
 		long epoch = System.currentTimeMillis();
-		//Employee.showScreen(employeeIndex, epoch);
+		Employee.showScreen(employeeIndex, epoch);
 		System.out.println(epoch);
+		
 	}
 	public void logout(){
 		//Saves all information and displays the login screen after an employee logs out 
