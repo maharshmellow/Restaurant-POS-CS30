@@ -1,7 +1,9 @@
 package system;
 
 import java.awt.Color;
+import java.awt.Dimension;
 import java.awt.Font;
+import java.awt.Toolkit;
 import java.awt.event.ActionEvent;
 import java.awt.event.ActionListener;
 import java.util.ArrayList;
@@ -14,7 +16,6 @@ import javax.swing.JPanel;
 import javax.swing.JPasswordField;
 import javax.swing.UIManager;
 import javax.swing.UnsupportedLookAndFeelException;
-import javax.swing.border.BevelBorder;
 
 import people.Employee;
 
@@ -40,6 +41,11 @@ public class LoginManager implements ActionListener{
 	    } catch (UnsupportedLookAndFeelException e) {
 	        e.printStackTrace();
 	    }
+		
+		Dimension screenSize = Toolkit.getDefaultToolkit().getScreenSize();
+		double screenWidth = screenSize.getWidth();
+		double height = screenSize.getHeight();
+		
 		
 		//Initializes the frame and the panel
 		loginFrame = new JFrame("Starbucks Login");		
@@ -68,7 +74,7 @@ public class LoginManager implements ActionListener{
 		//Login screen preferences - will change the login screen layout depending on what values are used
 		int gap = 10;
 		int buttonSize = 120;
-		int leftMargin = 150;
+		int leftMargin = (int) Math.round(((screenWidth / 2) - (((3 * buttonSize) + (3*gap))/2)));
 		int topMargin = 70;
 				
 		//DON'T EDIT - Positions the buttons and passwordfield using the above values
@@ -157,8 +163,10 @@ public class LoginManager implements ActionListener{
 		//Adds the panel to the frame
 		loginFrame.add(loginPanel);
 		
-		//Sets the size of the frame
-		loginFrame.setSize(700, 700);
+		
+		//loginFrame.setSize(700, 700);
+		loginFrame.setExtendedState(loginFrame.MAXIMIZED_BOTH);
+		loginFrame.setUndecorated(true);
 		loginFrame.setAlwaysOnTop(true);
 		
 		
@@ -253,7 +261,6 @@ public class LoginManager implements ActionListener{
 		boolean loginSuccess = false;
 		int employeeIndex = 0; 
 		
-		//employeePins.add("1066");
 		
 		for (int i = 0; i < Employee.pins.size(); i++){
 			if (Integer.parseInt(password)  == Employee.pins.get(i)){

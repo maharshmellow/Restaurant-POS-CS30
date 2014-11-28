@@ -1,5 +1,5 @@
 package people;
-import items.Drinks;
+import items.*;
 
 import java.awt.BorderLayout;
 import java.awt.Color;
@@ -10,6 +10,7 @@ import javax.swing.JButton;
 import javax.swing.JFrame;
 import javax.swing.JLabel;
 import javax.swing.JPanel;
+import javax.swing.SwingConstants;
 
 import system.LoginManager;
 
@@ -19,20 +20,39 @@ public class Employee extends LoginManager{
 	public static List<Double> salary = new ArrayList();
 	public static List<Double> hours = new ArrayList();
 	
+	static JFrame mainFrame;
+	static JPanel mainPanel;
+	
+	
 	public static void showScreen(int employeeIndex, double shiftStartTimeMs){
 		// Shows the main menu for employees ( some things restricted ) 
-		
-		JFrame mainFrame = new JFrame("Starbucks POS");
-		JPanel mainPanel = new JPanel();
+		mainFrame = new JFrame("Starbucks POS");
+		mainPanel = new JPanel();
 		mainPanel.setLayout(null);
-		
-		List<JButton> buttons = new ArrayList();
-		int gap = 2;
+
+		int gap = 3;
 		int buttonWidth = 100;
 		int buttonHeight = 100;
 		int leftMargin = 30;
-		int topMargin = 20;
-	
+		int topMargin = 70;	
+		
+		
+		setupDrinks(gap, buttonWidth, buttonHeight, leftMargin, topMargin);
+		setupFood(gap, buttonWidth, buttonHeight, leftMargin, topMargin);
+		//setupProducts();
+		//setupGrid();
+		//setupSettings();
+		mainFrame.add(mainPanel);
+		//mainFrame.setSize(1000, 700);
+		mainFrame.setExtendedState(mainFrame.MAXIMIZED_BOTH);  
+		mainFrame.setUndecorated(true);
+		mainFrame.setDefaultCloseOperation(JFrame.EXIT_ON_CLOSE);
+		mainFrame.setVisible(true);
+		
+		
+	}
+	public static void setupDrinks(int gap, int buttonWidth, int buttonHeight, int leftMargin, int topMargin){
+			
 		List<String> column1Drinks = new ArrayList();
 		List<String> column2Drinks = new ArrayList();
 		List<String> column3Drinks = new ArrayList();
@@ -62,13 +82,15 @@ public class Employee extends LoginManager{
 			String[] splitDrinkName = column1Drinks.get(i).split("\\s+");
 			
 			for (int j = 0; j < splitDrinkName.length; j++){
-				text = text + splitDrinkName[j] + "<p>";				
+				text = text + "<div style='text-align:center; font-size: 12px;'>" + splitDrinkName[j] + "</div>";				
 			}
 			JButton button = new JButton(text);	
-			button.setBackground(Color.BLUE);
+			button.setBackground(Color.GREEN);
+			button.setName(column1Drinks.get(i));
 			button.setBounds(leftMargin, (topMargin + (i * buttonHeight)) + gap, buttonWidth, buttonHeight);
 			mainPanel.add(button);
 		}
+		
 		for (int i = 0; i < column2Drinks.size(); i++){
 			//Add the buttons - set their bounds
 			String text = "<html>";
@@ -76,13 +98,15 @@ public class Employee extends LoginManager{
 			String[] splitDrinkName = column2Drinks.get(i).split("\\s+");
 			
 			for (int j = 0; j < splitDrinkName.length; j++){
-				text = text + splitDrinkName[j] + "<p>";				
+				text = text + "<div style='text-align:center; font-size: 12px;'>" + splitDrinkName[j] + "</div>";				
 			}
-			JButton button = new JButton(text);	
+			JButton button = new JButton(text);				
 			button.setBackground(Color.GREEN);
-			button.setBounds(leftMargin + buttonWidth + gap, (topMargin + (i * buttonHeight)) + (gap), buttonWidth, buttonHeight);
+			button.setName(column2Drinks.get(i));
+			button.setBounds(leftMargin + buttonWidth + gap, (topMargin + (i * buttonHeight)) + gap, buttonWidth, buttonHeight);
 			mainPanel.add(button);
 		}
+		
 		for (int i = 0; i < column3Drinks.size(); i++){
 			//Add the buttons - set their bounds
 			String text = "<html>";
@@ -90,21 +114,71 @@ public class Employee extends LoginManager{
 			String[] splitDrinkName = column3Drinks.get(i).split("\\s+");
 			
 			for (int j = 0; j < splitDrinkName.length; j++){
-				text = text + splitDrinkName[j] + "<p>";				
+				text = text + "<div style='text-align:center; font-size: 12px;'>" + splitDrinkName[j] + "</div>";				
 			}
 			JButton button = new JButton(text);	
-			button.setBackground(Color.RED);
-			button.setBounds(leftMargin + (2 * buttonWidth) + (2 * gap), (topMargin + (i * buttonHeight)) + (gap), buttonWidth, buttonHeight);
+			button.setBackground(Color.GREEN);
+			button.setName(column3Drinks.get(i));
+			button.setBounds(leftMargin + (2 * buttonWidth) + (2 * gap), (topMargin + (i * buttonHeight)) + gap , buttonWidth, buttonHeight);
 			mainPanel.add(button);
 		}
 		
 		
-		mainFrame.add(mainPanel);
-		mainFrame.setSize(1000, 700);
-		mainFrame.setDefaultCloseOperation(JFrame.EXIT_ON_CLOSE);
-		mainFrame.setVisible(true);
+		
 		
 		
 		System.out.println("Employee Screen");
 	}
+	public static void setupFood(int gap, int buttonWidth, int buttonHeight, int leftMargin, int topMargin){
+		List<String> column1Food = new ArrayList();
+		List<String> column2Food = new ArrayList();
+		
+		for (int i = 0; i < Food.names.size(); i++){
+			if (i % 2 == 0){	
+				//items with index of 0, 2, 4, 6... will go in the first column...
+				column1Food.add(Food.names.get(i));
+			}
+			else{
+				//...everything else will go in the second column
+				column2Food.add(Food.names.get(i));
+			}
+		}
+		
+		System.out.println("COLUMN1: " + column1Food);
+		System.out.println("COLUMN2: " + column2Food);
+		for (int i = 0; i < column1Food.size(); i++){
+			String text = "<html>";
+			//Splits the drink name by space into a list 
+			String[] splitFoodName = column1Food.get(i).split("\\s+");
+			
+			for (int j = 0; j < splitFoodName.length; j++){
+				text = text + "<div style='text-align:center; font-size: 12px;'>" + splitFoodName[j] + "</div>";				
+			}
+			JButton button = new JButton(text);	
+			button.setBackground(Color.BLACK);
+			button.setName(column1Food.get(i));
+			button.setBounds(leftMargin + (4 * buttonWidth)+(4*gap), (topMargin + (i * buttonHeight)) + gap , buttonWidth, buttonHeight);
+			mainPanel.add(button);
+			
+		}
+		for (int i = 0; i < column2Food.size(); i++){
+			String text = "<html>";
+			//Splits the drink name by space into a list 
+			String[] splitFoodName = column2Food.get(i).split("\\s+");
+			
+			for (int j = 0; j < splitFoodName.length; j++){
+				text = text + "<div style='text-align:center; font-size: 12px;'>" + splitFoodName[j] + "</div>";				
+			}
+			JButton button = new JButton(text);	
+			button.setBackground(Color.BLACK);
+			button.setName(column2Food.get(i));
+			button.setBounds(leftMargin + (5 * buttonWidth)+(5*gap) , (topMargin + (i * buttonHeight)) + gap , buttonWidth, buttonHeight);
+			mainPanel.add(button);
+		}
+		
+	}
+	public static void setupProducts(int gap, int buttonWidth, int buttonHeight, int leftMargin, int topMargin){
+		
+	}
+
 }
