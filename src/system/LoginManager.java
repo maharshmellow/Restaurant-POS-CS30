@@ -95,7 +95,7 @@ public class LoginManager implements ActionListener{
 		
 		//Sets the font of the passwordField
 		passwordField.setEditable(false);		
-		passwordField.setFont(new Font("Arial", Font.BOLD, 50));
+		passwordField.setFont(new Font("Calibri", Font.BOLD, 50));
 		
 		//Sets the fonts of the buttons
 		key1.setFont(new Font("Arial", Font.BOLD, 50));

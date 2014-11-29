@@ -1,16 +1,20 @@
 package people;
-import items.*;
+import items.Drinks;
+import items.Food;
+import items.Products;
 
-import java.awt.BorderLayout;
 import java.awt.Color;
+import java.awt.Font;
 import java.util.ArrayList;
 import java.util.List;
 
 import javax.swing.JButton;
 import javax.swing.JFrame;
-import javax.swing.JLabel;
 import javax.swing.JPanel;
-import javax.swing.SwingConstants;
+import javax.swing.JScrollPane;
+import javax.swing.JTable;
+import javax.swing.ListSelectionModel;
+import javax.swing.table.DefaultTableModel;
 
 import system.LoginManager;
 
@@ -23,6 +27,8 @@ public class Employee extends LoginManager{
 	static JFrame mainFrame;
 	static JPanel mainPanel;
 	
+	public static DefaultTableModel model;
+	public static JTable orderTable;
 	
 	public static void showScreen(int employeeIndex, double shiftStartTimeMs){
 		// Shows the main menu for employees ( some things restricted ) 
@@ -34,13 +40,13 @@ public class Employee extends LoginManager{
 		int buttonWidth = 100;
 		int buttonHeight = 100;
 		int leftMargin = 30;
-		int topMargin = 70;	
+		int topMargin = 100;	
 		
 		
 		setupDrinks(gap, buttonWidth, buttonHeight, leftMargin, topMargin);
 		setupFood(gap, buttonWidth, buttonHeight, leftMargin, topMargin);
-		//setupProducts();
-		//setupGrid();
+		setupProducts(gap, buttonWidth, buttonHeight, leftMargin, topMargin);
+		setupGrid();
 		//setupSettings();
 		mainFrame.add(mainPanel);
 		//mainFrame.setSize(1000, 700);
@@ -178,7 +184,82 @@ public class Employee extends LoginManager{
 		
 	}
 	public static void setupProducts(int gap, int buttonWidth, int buttonHeight, int leftMargin, int topMargin){
+		List<String> column1Products = new ArrayList();
+		List<String> column2Products = new ArrayList();
 		
+		for (int i = 0; i < Products.names.size(); i++){
+			if (i % 2 == 0){	
+				//items with index of 0, 2, 4, 6... will go in the first column...
+				column1Products.add(Products.names.get(i));
+			}
+			else{
+				//...everything else will go in the second column
+				column2Products.add(Products.names.get(i));
+			}
+		}
+		
+		System.out.println("COLUMN1: " + column1Products);
+		System.out.println("COLUMN2: " + column2Products);
+		
+		for (int i = 0; i < column1Products.size(); i++){
+			String text = "<html>";
+			//Splits the drink name by space into a list 
+			String[] splitProductName = column1Products.get(i).split("\\s+");
+			
+			for (int j = 0; j < splitProductName.length; j++){
+				text = text + "<div style='text-align:center; font-size: 12px;'>" + splitProductName[j] + "</div>";				
+			}
+			JButton button = new JButton(text);	
+			button.setBackground(Color.BLUE);
+			button.setName(column1Products.get(i));
+			button.setBounds(leftMargin + (7 * buttonWidth)+(6*gap), (topMargin + (i * buttonHeight)) + gap , buttonWidth, buttonHeight);
+			mainPanel.add(button);
+			
+		}
+		for (int i = 0; i < column2Products.size(); i++){
+			String text = "<html>";
+			//Splits the drink name by space into a list  - used to display the items names on different lines 
+			String[] splitProductName = column2Products.get(i).split("\\s+");
+			
+			for (int j = 0; j < splitProductName.length; j++){
+				text = text + "<div style='text-align:center; font-size: 12px;'>" + splitProductName[j] + "</div>";				
+			}
+			JButton button = new JButton(text);	
+			button.setBackground(Color.BLUE);
+			button.setName(column2Products.get(i));
+			button.setBounds(leftMargin + (8 * buttonWidth)+(7*gap) , (topMargin + (i * buttonHeight)) + gap , buttonWidth, buttonHeight);
+			mainPanel.add(button);
+		}
+	}
+	public static void setupGrid(){
+		
+		Object[][] d = {};
+		Object[] s = {"Item", "Price"};
+		model = new DefaultTableModel(d, s);
+		
+		orderTable = new JTable(model);		
+		JScrollPane scrollPane = new JScrollPane();
+		scrollPane.setBounds(1000, 100, 300, 200);
+		scrollPane.getViewport().setBackground(Color.GRAY);
+		orderTable.setBounds(10, 10, 300, 50);
+		orderTable.setFont(new Font("Cambria", Font.PLAIN, 18));
+		orderTable.setRowHeight(23);
+		orderTable.setSelectionMode(ListSelectionModel.SINGLE_SELECTION);
+		model.addRow(new Object[]{"Large Coffee COWs COWS COWs", "1.89"});
+		model.addRow(new Object[]{"Large Coffee", "1.89"});
+		model.addRow(new Object[]{"Large Coffee", "1.89"});
+		model.addRow(new Object[]{"Large Coffee", "1.89"});
+		model.addRow(new Object[]{"Large Coffee", "1.89"});
+		model.addRow(new Object[]{"Large Coffee", "1.89"});
+		model.addRow(new Object[]{"Large Coffee", "1.89"});
+		model.addRow(new Object[]{"Large Coffee", "1.89"});
+		model.addRow(new Object[]{"Large Coffee", "1.89"});
+		model.addRow(new Object[]{"Large Coffee", "1.89"});
+		model.addRow(new Object[]{"Large Coffee", "1.89"});
+		model.addRow(new Object[]{"Large Coffee", "1.89"});
+		
+		scrollPane.setViewportView(orderTable);
+		mainPanel.add(scrollPane);
 	}
 
 }
