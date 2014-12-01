@@ -4,6 +4,7 @@ import items.Food;
 import items.Products;
 
 import java.awt.Color;
+import java.awt.Dimension;
 import java.awt.Font;
 import java.util.ArrayList;
 import java.util.List;
@@ -233,17 +234,24 @@ public class Employee extends LoginManager{
 	}
 	public static void setupGrid(){
 		
-		Object[][] d = {};
-		Object[] s = {"Item", "Price"};
-		model = new DefaultTableModel(d, s);
+		Object[][] d = {};		//The data
+		Object[] s = {"Item", "Price ($)"};	//The column names
+		model = new DefaultTableModel(d, s){	
+			@Override
+			public boolean isCellEditable(int row, int column){
+				return false;
+			}
+		};
 		
 		orderTable = new JTable(model);		
 		JScrollPane scrollPane = new JScrollPane();
-		scrollPane.setBounds(1000, 100, 300, 200);
-		scrollPane.getViewport().setBackground(Color.GRAY);
-		orderTable.setBounds(10, 10, 300, 50);
+		scrollPane.setBounds(1000, 100, 300, 350);
+		scrollPane.getViewport().setBackground(Color.WHITE);
+		scrollPane.getVerticalScrollBar().setPreferredSize(new Dimension(40, 0));		//Increases the scrollbar width
+		
+		orderTable.setBounds(10, 10, 300, 500);
 		orderTable.setFont(new Font("Cambria", Font.PLAIN, 18));
-		orderTable.setRowHeight(23);
+		orderTable.setRowHeight(27);
 		orderTable.setSelectionMode(ListSelectionModel.SINGLE_SELECTION);
 		model.addRow(new Object[]{"Large Coffee COWs COWS COWs", "1.89"});
 		model.addRow(new Object[]{"Large Coffee", "1.89"});
