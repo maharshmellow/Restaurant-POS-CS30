@@ -2,15 +2,23 @@ package people;
 import items.Drinks;
 import items.Food;
 import items.Products;
+import system.Sales;
 
 import java.awt.Color;
 import java.awt.Dimension;
 import java.awt.Font;
+import java.awt.Toolkit;
+import java.awt.image.BufferedImage;
+import java.io.File;
+import java.io.IOException;
 import java.util.ArrayList;
 import java.util.List;
 
+import javax.imageio.ImageIO;
+import javax.swing.ImageIcon;
 import javax.swing.JButton;
 import javax.swing.JFrame;
+import javax.swing.JLabel;
 import javax.swing.JPanel;
 import javax.swing.JScrollPane;
 import javax.swing.JTable;
@@ -31,19 +39,28 @@ public class Employee extends LoginManager{
 	public static DefaultTableModel model;
 	public static JTable orderTable;
 	
+	static Dimension screenSize = Toolkit.getDefaultToolkit().getScreenSize();
+	static double screenWidth = screenSize.getWidth();
+	//double screenHeight = screenSize.getHeight();
+	
 	public static void showScreen(int employeeIndex, double shiftStartTimeMs){
 		// Shows the main menu for employees ( some things restricted ) 
 		mainFrame = new JFrame("Starbucks POS");
 		mainPanel = new JPanel();
 		mainPanel.setLayout(null);
 
-		int gap = 3;
+		int gap = 5;
 		int buttonWidth = 100;
 		int buttonHeight = 100;
 		int leftMargin = 30;
 		int topMargin = 100;	
 		
-		
+		try {
+			setupLogo();
+		} catch (IOException e) {
+			// TODO Auto-generated catch block
+			e.printStackTrace();
+		}
 		setupDrinks(gap, buttonWidth, buttonHeight, leftMargin, topMargin);
 		setupFood(gap, buttonWidth, buttonHeight, leftMargin, topMargin);
 		setupProducts(gap, buttonWidth, buttonHeight, leftMargin, topMargin);
@@ -57,6 +74,13 @@ public class Employee extends LoginManager{
 		mainFrame.setVisible(true);
 		
 		
+	}
+	public static void setupLogo() throws IOException{
+		BufferedImage logo = ImageIO.read(new File("src/files/logo.png"));
+		JLabel logoLabel = new JLabel (new ImageIcon(logo));
+		//TODO Put image in the center of the screen (horizontally) --> (screensize / 2) - (picwidth /2)
+		logoLabel.setBounds((int) ((screenWidth/2) - 40), 2, 80, 80);
+		mainPanel.add(logoLabel);
 	}
 	public static void setupDrinks(int gap, int buttonWidth, int buttonHeight, int leftMargin, int topMargin){
 			
@@ -94,7 +118,7 @@ public class Employee extends LoginManager{
 			JButton button = new JButton(text);	
 			button.setBackground(Color.GREEN);
 			button.setName(column1Drinks.get(i));
-			button.setBounds(leftMargin, (topMargin + (i * buttonHeight)) + gap, buttonWidth, buttonHeight);
+			button.setBounds(leftMargin, (topMargin + (i * buttonHeight)) + (i * gap), buttonWidth, buttonHeight);
 			mainPanel.add(button);
 		}
 		
@@ -110,7 +134,7 @@ public class Employee extends LoginManager{
 			JButton button = new JButton(text);				
 			button.setBackground(Color.GREEN);
 			button.setName(column2Drinks.get(i));
-			button.setBounds(leftMargin + buttonWidth + gap, (topMargin + (i * buttonHeight)) + gap, buttonWidth, buttonHeight);
+			button.setBounds(leftMargin + buttonWidth + gap, (topMargin + (i * buttonHeight)) + (i * gap), buttonWidth, buttonHeight);
 			mainPanel.add(button);
 		}
 		
@@ -126,7 +150,7 @@ public class Employee extends LoginManager{
 			JButton button = new JButton(text);	
 			button.setBackground(Color.GREEN);
 			button.setName(column3Drinks.get(i));
-			button.setBounds(leftMargin + (2 * buttonWidth) + (2 * gap), (topMargin + (i * buttonHeight)) + gap , buttonWidth, buttonHeight);
+			button.setBounds(leftMargin + (2 * buttonWidth) + (2 * gap), (topMargin + (i * buttonHeight)) + (i * gap) , buttonWidth, buttonHeight);
 			mainPanel.add(button);
 		}
 		
@@ -164,7 +188,7 @@ public class Employee extends LoginManager{
 			JButton button = new JButton(text);	
 			button.setBackground(Color.BLACK);
 			button.setName(column1Food.get(i));
-			button.setBounds(leftMargin + (4 * buttonWidth)+(4*gap), (topMargin + (i * buttonHeight)) + gap , buttonWidth, buttonHeight);
+			button.setBounds(leftMargin + (4 * buttonWidth)+(4*gap), (topMargin + (i * buttonHeight)) + (i * gap) , buttonWidth, buttonHeight);
 			mainPanel.add(button);
 			
 		}
@@ -179,7 +203,7 @@ public class Employee extends LoginManager{
 			JButton button = new JButton(text);	
 			button.setBackground(Color.BLACK);
 			button.setName(column2Food.get(i));
-			button.setBounds(leftMargin + (5 * buttonWidth)+(5*gap) , (topMargin + (i * buttonHeight)) + gap , buttonWidth, buttonHeight);
+			button.setBounds(leftMargin + (5 * buttonWidth)+(5*gap) , (topMargin + (i * buttonHeight)) + (i * gap) , buttonWidth, buttonHeight);
 			mainPanel.add(button);
 		}
 		
@@ -213,7 +237,7 @@ public class Employee extends LoginManager{
 			JButton button = new JButton(text);	
 			button.setBackground(Color.BLUE);
 			button.setName(column1Products.get(i));
-			button.setBounds(leftMargin + (7 * buttonWidth)+(6*gap), (topMargin + (i * buttonHeight)) + gap , buttonWidth, buttonHeight);
+			button.setBounds(leftMargin + (7 * buttonWidth)+(6*gap), (topMargin + (i * buttonHeight)) + (i *gap) , buttonWidth, buttonHeight);
 			mainPanel.add(button);
 			
 		}
@@ -228,12 +252,12 @@ public class Employee extends LoginManager{
 			JButton button = new JButton(text);	
 			button.setBackground(Color.BLUE);
 			button.setName(column2Products.get(i));
-			button.setBounds(leftMargin + (8 * buttonWidth)+(7*gap) , (topMargin + (i * buttonHeight)) + gap , buttonWidth, buttonHeight);
+			button.setBounds(leftMargin + (8 * buttonWidth)+(7*gap) , (topMargin + (i * buttonHeight)) + (i * gap) , buttonWidth, buttonHeight);
 			mainPanel.add(button);
 		}
 	}
 	public static void setupGrid(){
-		
+		//Grid setup
 		Object[][] d = {};		//The data
 		Object[] s = {"Item", "Price ($)"};	//The column names
 		model = new DefaultTableModel(d, s){	
@@ -265,9 +289,57 @@ public class Employee extends LoginManager{
 		model.addRow(new Object[]{"Large Coffee", "1.89"});
 		model.addRow(new Object[]{"Large Coffee", "1.89"});
 		model.addRow(new Object[]{"Large Coffee", "1.89"});
+		model.addRow(new Object[]{"Large Coffee", "1.89"});
+		model.addRow(new Object[]{"Large Coffee", "1.89"});
+		model.addRow(new Object[]{"Large Coffee", "1.89"});
+		model.addRow(new Object[]{"Large Coffee", "1.89"});
+		model.addRow(new Object[]{"Large Coffee", "1.89"});
+		model.addRow(new Object[]{"Large Coffee", "1.89"});
+		model.addRow(new Object[]{"Large Coffee", "1.89"});
+		model.addRow(new Object[]{"Large Coffee", "1.89"});
+		model.addRow(new Object[]{"Large Coffee", "1.89"});
+		model.addRow(new Object[]{"Large Coffee", "1.89"});
+		model.addRow(new Object[]{"Large Coffee", "1.89"});
+		model.addRow(new Object[]{"Large Coffee", "1.89"});
+		
+		//Total Price Indicator 
+		JLabel priceIndicator = new JLabel("Total: $0.00");
+		priceIndicator.setForeground(Color.RED);
+		priceIndicator.setFont(new Font("Sans Serif", Font.BOLD, 30));
+		priceIndicator.setBounds(1000, 450, 300, 40);
+		
+		
+		//Buttons Setup
+		JButton removeSelected = new JButton("Remove Selected Item");
+		
+		BufferedImage discardIcon = null;
+		BufferedImage completeIcon = null;
+		
+		try {
+			discardIcon = ImageIO.read(new File("src/files/cancel_order.png"));
+			completeIcon = ImageIO.read(new File("src/files/complete_order.png"));
+		} catch (IOException e) {
+			// TODO Auto-generated catch block
+			e.printStackTrace();
+		}
+	    
+		JButton discardOrder = new JButton(new ImageIcon(discardIcon));
+		JButton completeOrder = new JButton(new ImageIcon(completeIcon));
+		
+		removeSelected.setBounds(1000, 500, 300, 40);
+		discardOrder.setBounds(1000, 545, 145, 145);
+		completeOrder.setBounds(1155, 545, 145, 145);
+		
+		//Sales.showOrderScreen(); when the completeOrder button is clicked
+		
+		
 		
 		scrollPane.setViewportView(orderTable);
+		mainPanel.add(priceIndicator);
 		mainPanel.add(scrollPane);
+		mainPanel.add(removeSelected);
+		mainPanel.add(discardOrder);
+		mainPanel.add(completeOrder);
 	}
 
 }

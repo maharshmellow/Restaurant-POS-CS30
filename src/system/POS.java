@@ -17,32 +17,20 @@ public class POS {
 		
 	}
 	public static void initialize(){
-		//Initialize the employees, admin, sales - all information from text files
-		//fileManager = new FileManager();
-		
-		
+				
 		databaseManager = new DatabaseManager();
 		databaseManager.connectToDatabase();
-		//fileManager.copyDatabaseToTXT();			//Will copy the data gathered from the database to a temporary text file for the session - Data will be updated in the textfiles during the session but at the end, it will go back to the database
-		loginManager = new LoginManager();
-		loginManager.showLoginScreen();
-		
+				
 	}
 	
 	public static void getLogin(){
 		System.out.println("Login Screen");
-		//Initialize and display login screen
 		
-		//Get pin input 
-		
-		//Process pin input 
-		
+		loginManager = new LoginManager();
+		loginManager.showLoginScreen();	
+			
 		
 		
-				
-		
-		Manager manager = new Manager();
-		manager.showScreen();
 	}
 	
 

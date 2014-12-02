@@ -44,7 +44,7 @@ public class LoginManager implements ActionListener{
 		
 		Dimension screenSize = Toolkit.getDefaultToolkit().getScreenSize();
 		double screenWidth = screenSize.getWidth();
-		double height = screenSize.getHeight();
+		
 		
 		
 		//Initializes the frame and the panel
