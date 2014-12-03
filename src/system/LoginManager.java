@@ -290,6 +290,7 @@ public class LoginManager implements ActionListener{
 	public void login(int employeeIndex){
 		// Show the employee menu - start the timer of hours worked
 		long epoch = System.currentTimeMillis();
+		
 		Employee.showScreen(employeeIndex, epoch);
 		System.out.println(epoch);
 		

@@ -2,15 +2,17 @@ package people;
 import items.Drinks;
 import items.Food;
 import items.Products;
-import system.Sales;
 
 import java.awt.Color;
 import java.awt.Dimension;
 import java.awt.Font;
 import java.awt.Toolkit;
+import java.awt.event.ActionEvent;
+import java.awt.event.ActionListener;
 import java.awt.image.BufferedImage;
 import java.io.File;
 import java.io.IOException;
+import java.math.BigDecimal;
 import java.util.ArrayList;
 import java.util.List;
 
@@ -27,17 +29,22 @@ import javax.swing.table.DefaultTableModel;
 
 import system.LoginManager;
 
-public class Employee extends LoginManager{
+public class Employee extends LoginManager implements ActionListener{
 	public static List<String> names = new ArrayList();
 	public static List<Integer> pins = new ArrayList();
 	public static List<Double> salary = new ArrayList();
 	public static List<Double> hours = new ArrayList();
+	
+	public static List<String> orderNames = new ArrayList();
+	public static List<Double> orderPrices = new ArrayList();
 	
 	static JFrame mainFrame;
 	static JPanel mainPanel;
 	
 	public static DefaultTableModel model;
 	public static JTable orderTable;
+	
+	public static JLabel priceIndicator;
 	
 	static Dimension screenSize = Toolkit.getDefaultToolkit().getScreenSize();
 	static double screenWidth = screenSize.getWidth();
@@ -82,11 +89,17 @@ public class Employee extends LoginManager{
 		logoLabel.setBounds((int) ((screenWidth/2) - 40), 2, 80, 80);
 		mainPanel.add(logoLabel);
 	}
+	
 	public static void setupDrinks(int gap, int buttonWidth, int buttonHeight, int leftMargin, int topMargin){
 			
 		List<String> column1Drinks = new ArrayList();
+		List<Double> column1Prices = new ArrayList();
+		
 		List<String> column2Drinks = new ArrayList();
+		List<Double> column2Prices = new ArrayList();
+		
 		List<String> column3Drinks = new ArrayList();
+		List<Double> column3Prices = new ArrayList();
 		
 		for (int i = 0; i < Drinks.names.size(); i++){
 			//Checks the sizes of drinks and assigns them to a column list
@@ -95,34 +108,54 @@ public class Employee extends LoginManager{
 			if (splitDrinkName[0].toLowerCase().contains("grande")){
 				//Grande sized drink - 2nd column
 				column2Drinks.add(Drinks.names.get(i));
+				column2Prices.add(Drinks.prices.get(i));
 			}
 			else if (splitDrinkName[0].toLowerCase().contains("venti")){
 				//Venti Sized drink - 3rd column
-				column3Drinks.add(Drinks.names.get(i));	
+				column3Drinks.add(Drinks.names.get(i));
+				column3Prices.add(Drinks.prices.get(i));
 			}
 			else{
 				//Tall sized drink / drink size not available - 1st column
 				column1Drinks.add(Drinks.names.get(i));
+				column1Prices.add(Drinks.prices.get(i));
 			}
 		}
 		
 		for (int i = 0; i < column1Drinks.size(); i++){
+			final String drinkName = column1Drinks.get(i);		// Gets the drink name
+			final Double drinkPrice = column1Prices.get(i);		// Gets the drink price
 			//Add the buttons - set their bounds
 			String text = "<html>";
 			//Splits the drink name by space into a list 
-			String[] splitDrinkName = column1Drinks.get(i).split("\\s+");
+			String[] splitDrinkName = drinkName.split("\\s+");
 			
 			for (int j = 0; j < splitDrinkName.length; j++){
 				text = text + "<div style='text-align:center; font-size: 12px;'>" + splitDrinkName[j] + "</div>";				
 			}
 			JButton button = new JButton(text);	
 			button.setBackground(Color.GREEN);
-			button.setName(column1Drinks.get(i));
+			button.setName(drinkName);
 			button.setBounds(leftMargin, (topMargin + (i * buttonHeight)) + (i * gap), buttonWidth, buttonHeight);
+			
+			button.setActionCommand(column1Drinks.get(i));
+			button.addActionListener(new ActionListener(){
+				public void actionPerformed(ActionEvent e){
+					//Adds the name of item and the price of the item to arrays
+					orderNames.add(drinkName);			//Will be stored in logs 
+					orderPrices.add(drinkPrice);		//Used to get the order total
+					
+					//Adds the item to the JTable
+					model.addRow(new Object[]{drinkName, drinkPrice});
+					updatePriceIndicator();					
+				}
+			});
 			mainPanel.add(button);
 		}
 		
 		for (int i = 0; i < column2Drinks.size(); i++){
+			final String drinkName = column2Drinks.get(i);		// Gets the drink name
+			final Double drinkPrice = column2Prices.get(i);		// Gets the drink pric
 			//Add the buttons - set their bounds
 			String text = "<html>";
 			//Splits the drink name by space into a list 
@@ -135,10 +168,26 @@ public class Employee extends LoginManager{
 			button.setBackground(Color.GREEN);
 			button.setName(column2Drinks.get(i));
 			button.setBounds(leftMargin + buttonWidth + gap, (topMargin + (i * buttonHeight)) + (i * gap), buttonWidth, buttonHeight);
+			
+			button.setActionCommand(column2Drinks.get(i));
+			button.addActionListener(new ActionListener(){
+				public void actionPerformed(ActionEvent e){
+					//Adds the name of item and the price of the item to arrays
+					orderNames.add(drinkName);			//Will be stored in logs 
+					orderPrices.add(drinkPrice);		//Used to get the order total
+					
+					//Adds the item to the JTable
+					model.addRow(new Object[]{drinkName, drinkPrice});
+					updatePriceIndicator();					
+				}
+			});
 			mainPanel.add(button);
 		}
 		
 		for (int i = 0; i < column3Drinks.size(); i++){
+			final String drinkName = column3Drinks.get(i);		// Gets the drink name
+			final Double drinkPrice = column3Prices.get(i);		// Gets the drink pric
+			
 			//Add the buttons - set their bounds
 			String text = "<html>";
 			//Splits the drink name by space into a list 
@@ -151,6 +200,19 @@ public class Employee extends LoginManager{
 			button.setBackground(Color.GREEN);
 			button.setName(column3Drinks.get(i));
 			button.setBounds(leftMargin + (2 * buttonWidth) + (2 * gap), (topMargin + (i * buttonHeight)) + (i * gap) , buttonWidth, buttonHeight);
+			
+			button.setActionCommand(column3Drinks.get(i));
+			button.addActionListener(new ActionListener(){
+				public void actionPerformed(ActionEvent e){
+					//Adds the name of item and the price of the item to arrays
+					orderNames.add(drinkName);			//Will be stored in logs 
+					orderPrices.add(drinkPrice);		//Used to get the order total
+					
+					//Adds the item to the JTable
+					model.addRow(new Object[]{drinkName, drinkPrice});
+					updatePriceIndicator();					
+				}
+			});
 			mainPanel.add(button);
 		}
 		
@@ -160,6 +222,8 @@ public class Employee extends LoginManager{
 		
 		System.out.println("Employee Screen");
 	}
+	
+	
 	public static void setupFood(int gap, int buttonWidth, int buttonHeight, int leftMargin, int topMargin){
 		List<String> column1Food = new ArrayList();
 		List<String> column2Food = new ArrayList();
@@ -277,33 +341,11 @@ public class Employee extends LoginManager{
 		orderTable.setFont(new Font("Cambria", Font.PLAIN, 18));
 		orderTable.setRowHeight(27);
 		orderTable.setSelectionMode(ListSelectionModel.SINGLE_SELECTION);
-		model.addRow(new Object[]{"Large Coffee COWs COWS COWs", "1.89"});
-		model.addRow(new Object[]{"Large Coffee", "1.89"});
-		model.addRow(new Object[]{"Large Coffee", "1.89"});
-		model.addRow(new Object[]{"Large Coffee", "1.89"});
-		model.addRow(new Object[]{"Large Coffee", "1.89"});
-		model.addRow(new Object[]{"Large Coffee", "1.89"});
-		model.addRow(new Object[]{"Large Coffee", "1.89"});
-		model.addRow(new Object[]{"Large Coffee", "1.89"});
-		model.addRow(new Object[]{"Large Coffee", "1.89"});
-		model.addRow(new Object[]{"Large Coffee", "1.89"});
-		model.addRow(new Object[]{"Large Coffee", "1.89"});
-		model.addRow(new Object[]{"Large Coffee", "1.89"});
-		model.addRow(new Object[]{"Large Coffee", "1.89"});
-		model.addRow(new Object[]{"Large Coffee", "1.89"});
-		model.addRow(new Object[]{"Large Coffee", "1.89"});
-		model.addRow(new Object[]{"Large Coffee", "1.89"});
-		model.addRow(new Object[]{"Large Coffee", "1.89"});
-		model.addRow(new Object[]{"Large Coffee", "1.89"});
-		model.addRow(new Object[]{"Large Coffee", "1.89"});
-		model.addRow(new Object[]{"Large Coffee", "1.89"});
-		model.addRow(new Object[]{"Large Coffee", "1.89"});
-		model.addRow(new Object[]{"Large Coffee", "1.89"});
-		model.addRow(new Object[]{"Large Coffee", "1.89"});
-		model.addRow(new Object[]{"Large Coffee", "1.89"});
+		
+		
 		
 		//Total Price Indicator 
-		JLabel priceIndicator = new JLabel("Total: $0.00");
+		priceIndicator = new JLabel("Total: $0.00");
 		priceIndicator.setForeground(Color.RED);
 		priceIndicator.setFont(new Font("Sans Serif", Font.BOLD, 30));
 		priceIndicator.setBounds(1000, 450, 300, 40);
@@ -341,5 +383,20 @@ public class Employee extends LoginManager{
 		mainPanel.add(discardOrder);
 		mainPanel.add(completeOrder);
 	}
+	
+	static void updatePriceIndicator(){
+		Double  price = 0.0;
+		for (int i = 0; i < orderPrices.size(); i++){
+			price += orderPrices.get(i);
+		}
+		priceIndicator.setText("Total: $" + String.format("%.2f", price));
+	}
+	
+		
+
 
 }
+
+
+
+
