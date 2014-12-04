@@ -2,7 +2,7 @@ package system;
 import items.Drinks;
 import items.Food;
 import items.Products;
-
+import system.LoginManager;
 import java.awt.Color;
 import java.awt.Dimension;
 import java.awt.Font;
@@ -17,6 +17,7 @@ import java.util.ArrayList;
 import java.util.List;
 
 import javax.imageio.ImageIO;
+import javax.swing.BorderFactory;
 import javax.swing.ImageIcon;
 import javax.swing.JButton;
 import javax.swing.JFrame;
@@ -68,7 +69,7 @@ public class SalesManager extends LoginManager implements ActionListener{
 		setupFood(gap, buttonWidth, buttonHeight, leftMargin, topMargin);
 		setupProducts(gap, buttonWidth, buttonHeight, leftMargin, topMargin);
 		setupGrid();
-		setupLoginLogout();
+		setupSettings();
 		mainFrame.add(mainPanel);
 		//mainFrame.setSize(1000, 700);
 		mainFrame.setExtendedState(mainFrame.MAXIMIZED_BOTH);  
@@ -130,7 +131,8 @@ public class SalesManager extends LoginManager implements ActionListener{
 				text = text + "<div style='text-align:center; font-size: 12px;'>" + splitDrinkName[j] + "</div>";				
 			}
 			JButton button = new JButton(text);	
-			button.setBackground(Color.GREEN);
+			button.setContentAreaFilled(false);
+			button.setBorder(BorderFactory.createMatteBorder(1, 1, 1, 1, Color.GREEN));
 			button.setBounds(leftMargin, (topMargin + (i * buttonHeight)) + (i * gap), buttonWidth, buttonHeight);
 			
 			button.setActionCommand(column1Drinks.get(i));
@@ -160,7 +162,8 @@ public class SalesManager extends LoginManager implements ActionListener{
 				text = text + "<div style='text-align:center; font-size: 12px;'>" + splitDrinkName[j] + "</div>";				
 			}
 			JButton button = new JButton(text);				
-			button.setBackground(Color.GREEN);
+			button.setContentAreaFilled(false);
+			button.setBorder(BorderFactory.createMatteBorder(1, 1, 1, 1, Color.GREEN));
 			button.setBounds(leftMargin + buttonWidth + gap, (topMargin + (i * buttonHeight)) + (i * gap), buttonWidth, buttonHeight);
 			
 			button.setActionCommand(column2Drinks.get(i));
@@ -191,7 +194,8 @@ public class SalesManager extends LoginManager implements ActionListener{
 				text = text + "<div style='text-align:center; font-size: 12px;'>" + splitDrinkName[j] + "</div>";				
 			}
 			JButton button = new JButton(text);	
-			button.setBackground(Color.GREEN);
+			button.setContentAreaFilled(false);
+			button.setBorder(BorderFactory.createMatteBorder(1, 1, 1, 1, Color.GREEN));
 			button.setBounds(leftMargin + (2 * buttonWidth) + (2 * gap), (topMargin + (i * buttonHeight)) + (i * gap) , buttonWidth, buttonHeight);
 			
 			button.setActionCommand(column3Drinks.get(i));
@@ -247,7 +251,8 @@ public class SalesManager extends LoginManager implements ActionListener{
 				text = text + "<div style='text-align:center; font-size: 12px;'>" + splitFoodName[j] + "</div>";				
 			}
 			JButton button = new JButton(text);	
-			button.setBackground(Color.BLACK);
+			button.setContentAreaFilled(false);
+			button.setBorder(BorderFactory.createMatteBorder(1, 1, 1, 1, Color.BLACK));
 			button.setBounds(leftMargin + (4 * buttonWidth)+(4*gap), (topMargin + (i * buttonHeight)) + (i * gap) , buttonWidth, buttonHeight);
 			
 			button.setActionCommand(column1Food.get(i));
@@ -276,7 +281,8 @@ public class SalesManager extends LoginManager implements ActionListener{
 				text = text + "<div style='text-align:center; font-size: 12px;'>" + splitFoodName[j] + "</div>";				
 			}
 			JButton button = new JButton(text);	
-			button.setBackground(Color.BLACK);
+			button.setContentAreaFilled(false);
+			button.setBorder(BorderFactory.createMatteBorder(1, 1, 1, 1, Color.BLACK));
 			button.setBounds(leftMargin + (5 * buttonWidth)+(5*gap) , (topMargin + (i * buttonHeight)) + (i * gap) , buttonWidth, buttonHeight);
 			
 			button.setActionCommand(column1Food.get(i));
@@ -329,7 +335,8 @@ public class SalesManager extends LoginManager implements ActionListener{
 				text = text + "<div style='text-align:center; font-size: 12px;'>" + splitProductName[j] + "</div>";				
 			}
 			JButton button = new JButton(text);	
-			button.setBackground(Color.BLUE);
+			button.setContentAreaFilled(false);
+			button.setBorder(BorderFactory.createMatteBorder(1, 1, 1, 1, Color.BLUE));
 			button.setBounds(leftMargin + (7 * buttonWidth)+(6*gap), (topMargin + (i * buttonHeight)) + (i *gap) , buttonWidth, buttonHeight);
 			
 			button.setActionCommand(column1Products.get(i));
@@ -359,7 +366,8 @@ public class SalesManager extends LoginManager implements ActionListener{
 				text = text + "<div style='text-align:center; font-size: 12px;'>" + splitProductName[j] + "</div>";				
 			}
 			JButton button = new JButton(text);	
-			button.setBackground(Color.BLUE);
+			button.setContentAreaFilled(false);
+			button.setBorder(BorderFactory.createMatteBorder(1, 1, 1, 1, Color.BLUE));
 			button.setBounds(leftMargin + (8 * buttonWidth)+(7*gap) , (topMargin + (i * buttonHeight)) + (i * gap) , buttonWidth, buttonHeight);
 			
 			button.setActionCommand(column1Products.get(i));
@@ -412,6 +420,9 @@ public class SalesManager extends LoginManager implements ActionListener{
 		
 		//Buttons Setup
 		JButton removeSelected = new JButton("Remove Selected Item");
+		removeSelected.setContentAreaFilled(false);
+		removeSelected.setBackground(Color.RED);
+		removeSelected.setBorder(BorderFactory.createBevelBorder(1));
 		removeSelected.addActionListener(new ActionListener(){
 
 			@Override
@@ -446,6 +457,9 @@ public class SalesManager extends LoginManager implements ActionListener{
 	    
 		JButton discardOrder = new JButton(new ImageIcon(discardIcon));
 		JButton completeOrder = new JButton(new ImageIcon(completeIcon));
+		
+		discardOrder.setContentAreaFilled(false);
+		completeOrder.setContentAreaFilled(false);
 		
 		discardOrder.addActionListener(new ActionListener(){
 
@@ -484,13 +498,16 @@ public class SalesManager extends LoginManager implements ActionListener{
 		mainPanel.add(completeOrder);
 	}
 	
-	public static void setupLoginLogout(){
+	public static void setupSettings(){
 		BufferedImage loginImage = null;
 		BufferedImage logoutImage = null;
-				
+		BufferedImage settingsImage = null;
+		BufferedImage exitImage = null;
 		try {
 			loginImage = ImageIO.read(new File("src/files/login.png"));
 			logoutImage = ImageIO.read(new File("src/files/logout.png"));
+			settingsImage = ImageIO.read(new File("src/files/settings.png"));
+			exitImage = ImageIO.read(new File("src/files/exit.png"));
 		} catch (IOException e) {
 			// TODO Auto-generated catch block
 			e.printStackTrace();
@@ -498,12 +515,61 @@ public class SalesManager extends LoginManager implements ActionListener{
 	    
 		JButton loginButton = new JButton(new ImageIcon(loginImage));
 		JButton logoutButton = new JButton(new ImageIcon(logoutImage));
+		JButton settingsButton = new JButton(new ImageIcon(settingsImage));
+		JButton exitButton = new JButton(new ImageIcon(exitImage));
 		
-		loginButton.setBounds((int)screenWidth - 100, 15, 35, 35);
-		logoutButton.setBounds((int)screenWidth - 50, 15, 35, 35);
+		loginButton.setBounds((int)screenWidth - 200, 15, 35, 35);
+		logoutButton.setBounds((int)screenWidth - 150, 15, 35, 35);
+		settingsButton.setBounds((int)screenWidth - 100, 15, 35, 35);
+		exitButton.setBounds((int)screenWidth - 50, 15, 35, 35);
+		
+		loginButton.setContentAreaFilled(false);
+		logoutButton.setContentAreaFilled(false);
+		settingsButton.setContentAreaFilled(false);
+		exitButton.setContentAreaFilled(false);
+		
+		
+		loginButton.addActionListener(new ActionListener(){
+
+			@Override
+			public void actionPerformed(ActionEvent arg0) {
+				//Call the login screen function
+				//TODO
+			}
+			
+		});
+		
+		logoutButton.addActionListener(new ActionListener(){
+			@Override 
+			public void actionPerformed(ActionEvent arg0){
+				//Call the logout screen - show the login screen but log that person out
+				//TODO
+			}
+		});
+		
+		settingsButton.addActionListener(new ActionListener(){
+			
+			@Override
+			public void actionPerformed(ActionEvent arg0){
+				//Call the settings screen - ask for the manager / admin login - store pin in the program (Edit from program / settings screen)
+				//after getting coorect pin, open the settings screen with the sales information and the employee information
+				
+				//TODO showSettings();
+			}
+		});
+		
+		exitButton.addActionListener(new ActionListener(){
+			
+			@Override 
+			public void actionPerformed(ActionEvent arg0){
+				POS.exit();
+			}
+		});
 		
 		mainPanel.add(loginButton);
 		mainPanel.add(logoutButton);
+		mainPanel.add(settingsButton);
+		mainPanel.add(exitButton);
 		
 	}
 	
@@ -515,8 +581,6 @@ public class SalesManager extends LoginManager implements ActionListener{
 		priceIndicator.setText("Total: $" + String.format("%.2f", price));
 	}
 	
-		
-
 
 }
 

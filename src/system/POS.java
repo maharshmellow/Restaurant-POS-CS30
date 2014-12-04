@@ -31,6 +31,8 @@ public class POS {
 			
 		
 		
+	}public static void exit(){
+		//TODO Database connection - send information back 
 	}
 	
 

@@ -295,7 +295,7 @@ public class LoginManager implements ActionListener{
 		System.out.println(epoch);
 		
 	}
-	public void logout(){
+	public static void logout(){
 		//Saves all information and displays the login screen after an employee logs out 
 		
 	}
