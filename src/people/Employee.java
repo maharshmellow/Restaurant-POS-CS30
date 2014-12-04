@@ -135,7 +135,6 @@ public class Employee extends LoginManager implements ActionListener{
 			}
 			JButton button = new JButton(text);	
 			button.setBackground(Color.GREEN);
-			button.setName(drinkName);
 			button.setBounds(leftMargin, (topMargin + (i * buttonHeight)) + (i * gap), buttonWidth, buttonHeight);
 			
 			button.setActionCommand(column1Drinks.get(i));
@@ -166,7 +165,6 @@ public class Employee extends LoginManager implements ActionListener{
 			}
 			JButton button = new JButton(text);				
 			button.setBackground(Color.GREEN);
-			button.setName(column2Drinks.get(i));
 			button.setBounds(leftMargin + buttonWidth + gap, (topMargin + (i * buttonHeight)) + (i * gap), buttonWidth, buttonHeight);
 			
 			button.setActionCommand(column2Drinks.get(i));
@@ -198,7 +196,6 @@ public class Employee extends LoginManager implements ActionListener{
 			}
 			JButton button = new JButton(text);	
 			button.setBackground(Color.GREEN);
-			button.setName(column3Drinks.get(i));
 			button.setBounds(leftMargin + (2 * buttonWidth) + (2 * gap), (topMargin + (i * buttonHeight)) + (i * gap) , buttonWidth, buttonHeight);
 			
 			button.setActionCommand(column3Drinks.get(i));
@@ -216,47 +213,65 @@ public class Employee extends LoginManager implements ActionListener{
 			mainPanel.add(button);
 		}
 		
-		
-		
-		
-		
 		System.out.println("Employee Screen");
 	}
 	
 	
 	public static void setupFood(int gap, int buttonWidth, int buttonHeight, int leftMargin, int topMargin){
 		List<String> column1Food = new ArrayList();
+		List<Double> column1Prices = new ArrayList();
 		List<String> column2Food = new ArrayList();
+		List<Double> column2Prices = new ArrayList();
 		
 		for (int i = 0; i < Food.names.size(); i++){
 			if (i % 2 == 0){	
 				//items with index of 0, 2, 4, 6... will go in the first column...
 				column1Food.add(Food.names.get(i));
+				column1Prices.add(Food.prices.get(i));
 			}
 			else{
 				//...everything else will go in the second column
 				column2Food.add(Food.names.get(i));
+				column2Prices.add(Food.prices.get(i));
 			}
 		}
 		
 		System.out.println("COLUMN1: " + column1Food);
 		System.out.println("COLUMN2: " + column2Food);
+		
+		
 		for (int i = 0; i < column1Food.size(); i++){
+			final String foodName = column1Food.get(i);
+			final Double foodPrice = column1Prices.get(i);
 			String text = "<html>";
 			//Splits the drink name by space into a list 
-			String[] splitFoodName = column1Food.get(i).split("\\s+");
+			String[] splitFoodName = foodName.split("\\s+");
 			
 			for (int j = 0; j < splitFoodName.length; j++){
 				text = text + "<div style='text-align:center; font-size: 12px;'>" + splitFoodName[j] + "</div>";				
 			}
 			JButton button = new JButton(text);	
 			button.setBackground(Color.BLACK);
-			button.setName(column1Food.get(i));
 			button.setBounds(leftMargin + (4 * buttonWidth)+(4*gap), (topMargin + (i * buttonHeight)) + (i * gap) , buttonWidth, buttonHeight);
+			
+			button.setActionCommand(column1Food.get(i));
+			button.addActionListener(new ActionListener(){
+				public void actionPerformed(ActionEvent e){
+					//Adds the name of item and the price of the item to arrays
+					orderNames.add(foodName);			//Will be stored in logs 
+					orderPrices.add(foodPrice);		//Used to get the order total
+					
+					//Adds the item to the JTable
+					model.addRow(new Object[]{foodName, foodPrice});
+					updatePriceIndicator();					
+				}
+			});
 			mainPanel.add(button);
 			
 		}
 		for (int i = 0; i < column2Food.size(); i++){
+			final String foodName = column2Food.get(i);
+			final double foodPrice = column2Prices.get(i);
 			String text = "<html>";
 			//Splits the drink name by space into a list 
 			String[] splitFoodName = column2Food.get(i).split("\\s+");
@@ -266,24 +281,41 @@ public class Employee extends LoginManager implements ActionListener{
 			}
 			JButton button = new JButton(text);	
 			button.setBackground(Color.BLACK);
-			button.setName(column2Food.get(i));
 			button.setBounds(leftMargin + (5 * buttonWidth)+(5*gap) , (topMargin + (i * buttonHeight)) + (i * gap) , buttonWidth, buttonHeight);
+			
+			button.setActionCommand(column1Food.get(i));
+			button.addActionListener(new ActionListener(){
+				public void actionPerformed(ActionEvent e){
+					//Adds the name of item and the price of the item to arrays
+					orderNames.add(foodName);			//Will be stored in logs 
+					orderPrices.add(foodPrice);		//Used to get the order total
+					
+					//Adds the item to the JTable
+					model.addRow(new Object[]{foodName, foodPrice});
+					updatePriceIndicator();					
+				}
+			});
 			mainPanel.add(button);
 		}
 		
 	}
 	public static void setupProducts(int gap, int buttonWidth, int buttonHeight, int leftMargin, int topMargin){
 		List<String> column1Products = new ArrayList();
+		List<Double> column1Prices = new ArrayList();
 		List<String> column2Products = new ArrayList();
+		List<Double> column2Prices = new ArrayList();
+		
 		
 		for (int i = 0; i < Products.names.size(); i++){
 			if (i % 2 == 0){	
 				//items with index of 0, 2, 4, 6... will go in the first column...
 				column1Products.add(Products.names.get(i));
+				column1Prices.add(Products.prices.get(i));
 			}
 			else{
 				//...everything else will go in the second column
 				column2Products.add(Products.names.get(i));
+				column2Prices.add(Products.prices.get(i));
 			}
 		}
 		
@@ -291,21 +323,38 @@ public class Employee extends LoginManager implements ActionListener{
 		System.out.println("COLUMN2: " + column2Products);
 		
 		for (int i = 0; i < column1Products.size(); i++){
+			final String productName = column1Products.get(i);
+			final double productPrice = column1Prices.get(i);
 			String text = "<html>";
 			//Splits the drink name by space into a list 
-			String[] splitProductName = column1Products.get(i).split("\\s+");
+			String[] splitProductName = productName.split("\\s+");
 			
 			for (int j = 0; j < splitProductName.length; j++){
 				text = text + "<div style='text-align:center; font-size: 12px;'>" + splitProductName[j] + "</div>";				
 			}
 			JButton button = new JButton(text);	
 			button.setBackground(Color.BLUE);
-			button.setName(column1Products.get(i));
 			button.setBounds(leftMargin + (7 * buttonWidth)+(6*gap), (topMargin + (i * buttonHeight)) + (i *gap) , buttonWidth, buttonHeight);
+			
+			button.setActionCommand(column1Products.get(i));
+			button.addActionListener(new ActionListener(){
+				public void actionPerformed(ActionEvent e){
+					//Adds the name of item and the price of the item to arrays
+					orderNames.add(productName);			//Will be stored in logs 
+					orderPrices.add(productPrice);		//Used to get the order total
+					
+					//Adds the item to the JTable
+					model.addRow(new Object[]{productName, productPrice});
+					updatePriceIndicator();					
+				}
+			});
 			mainPanel.add(button);
 			
 		}
 		for (int i = 0; i < column2Products.size(); i++){
+			final String productName = column2Products.get(i);
+			final double productPrice = column2Prices.get(i);
+			
 			String text = "<html>";
 			//Splits the drink name by space into a list  - used to display the items names on different lines 
 			String[] splitProductName = column2Products.get(i).split("\\s+");
@@ -315,8 +364,20 @@ public class Employee extends LoginManager implements ActionListener{
 			}
 			JButton button = new JButton(text);	
 			button.setBackground(Color.BLUE);
-			button.setName(column2Products.get(i));
 			button.setBounds(leftMargin + (8 * buttonWidth)+(7*gap) , (topMargin + (i * buttonHeight)) + (i * gap) , buttonWidth, buttonHeight);
+			
+			button.setActionCommand(column1Products.get(i));
+			button.addActionListener(new ActionListener(){
+				public void actionPerformed(ActionEvent e){
+					//Adds the name of item and the price of the item to arrays
+					orderNames.add(productName);			//Will be stored in logs 
+					orderPrices.add(productPrice);		//Used to get the order total
+					
+					//Adds the item to the JTable
+					model.addRow(new Object[]{productName, productPrice});
+					updatePriceIndicator();					
+				}
+			});
 			mainPanel.add(button);
 		}
 	}
@@ -353,6 +414,26 @@ public class Employee extends LoginManager implements ActionListener{
 		
 		//Buttons Setup
 		JButton removeSelected = new JButton("Remove Selected Item");
+		removeSelected.addActionListener(new ActionListener(){
+
+			@Override
+			public void actionPerformed(ActionEvent e) {
+				if (orderTable.getSelectedRow() == -1){
+					// Nothing is selected - do nothing
+				}else{
+					//Removes the item from the orderNames and orderPrices lists
+					orderNames.remove(orderTable.getSelectedRow());
+					orderPrices.remove(orderTable.getSelectedRow());
+					//Removes the row from the table
+					model.removeRow(orderTable.getSelectedRow());
+					
+					updatePriceIndicator();
+					
+				}
+				
+			}
+			
+		});
 		
 		BufferedImage discardIcon = null;
 		BufferedImage completeIcon = null;
@@ -367,6 +448,27 @@ public class Employee extends LoginManager implements ActionListener{
 	    
 		JButton discardOrder = new JButton(new ImageIcon(discardIcon));
 		JButton completeOrder = new JButton(new ImageIcon(completeIcon));
+		
+		discardOrder.addActionListener(new ActionListener(){
+
+			@Override
+			public void actionPerformed(ActionEvent e) {
+				 
+				//Have to do it backwards because the number of rows gets smaller each time - the other way produces errors - tries to delete nothing 
+				for (int i = model.getRowCount() - 1; i >= 0; i--){
+					System.out.println(model.getRowCount());					
+					model.removeRow(i);
+				}
+				orderNames.clear();
+				orderPrices.clear();
+				
+				updatePriceIndicator();
+			}
+			
+		});
+		
+		
+		
 		
 		removeSelected.setBounds(1000, 500, 300, 40);
 		discardOrder.setBounds(1000, 545, 145, 145);
