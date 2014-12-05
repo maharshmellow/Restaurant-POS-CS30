@@ -578,6 +578,7 @@ public class SalesManager extends LoginManager implements ActionListener{
 		for (int i = 0; i < orderPrices.size(); i++){
 			price += orderPrices.get(i);
 		}
+		price = price * 1.05;		//GST
 		priceIndicator.setText("Total: $" + String.format("%.2f", price));
 	}
 	
