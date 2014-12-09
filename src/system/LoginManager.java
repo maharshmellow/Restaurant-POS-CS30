@@ -12,6 +12,7 @@ import java.util.List;
 import javax.swing.BorderFactory;
 import javax.swing.JButton;
 import javax.swing.JFrame;
+import javax.swing.JOptionPane;
 import javax.swing.JPanel;
 import javax.swing.JPasswordField;
 import javax.swing.UIManager;
@@ -22,12 +23,21 @@ import people.Employee;
 public class LoginManager implements ActionListener{
 	
 	public List<String> employeePins = new ArrayList();
-	public static JPasswordField passwordField;
+	public static JPasswordField passwordField = new JPasswordField();
 	public static String password = "";
 	
 	JFrame loginFrame;
 	
+	String loginLogout = "login";
+	
 	public void showLoginScreen(){
+		//type 1 = logout
+		//Clears the password - when the employee logins from the order screen- the password needs to be cleared to enter another password
+		password = "";
+		
+		if (passwordField.getPassword().length != 0){
+			passwordField.setText("");
+		}
 		
 		//Sets the Look and Feel to the system look and feel	    
 		try {
@@ -55,7 +65,7 @@ public class LoginManager implements ActionListener{
 		loginPanel.setLayout(null);		
 		
 		//Initialize buttons with their texts
-		passwordField = new JPasswordField(4);
+		//already initialized at the top - class variables 
 		
 		
 		JButton key1 = new JButton("1");
@@ -261,7 +271,7 @@ public class LoginManager implements ActionListener{
 		boolean loginSuccess = false;
 		int employeeIndex = 0; 
 		
-		
+				
 		for (int i = 0; i < Employee.pins.size(); i++){
 			if (Integer.parseInt(password)  == Employee.pins.get(i)){
 				
@@ -276,7 +286,16 @@ public class LoginManager implements ActionListener{
 			loginFrame.dispose();
 			System.out.println("Employee Index: " + employeeIndex);
 			System.out.println("Employee Name: " + Employee.names.get(employeeIndex));
-			login(employeeIndex);
+			
+			if (loginLogout == "login"){
+				login(employeeIndex);
+			}
+			else{
+				logout(employeeIndex);
+			}
+			
+			//login(employeeIndex);
+			//TODO add logout(employeeIndex); 
 			
 		}else{
 			//Incorrect Login
@@ -290,15 +309,63 @@ public class LoginManager implements ActionListener{
 	public void login(int employeeIndex){
 		// Show the employee menu - start the timer of hours worked
 		long epoch = System.currentTimeMillis();
+		//if there is an employee signed in --- don't open another screen - just add the new employee to the list
+		if (Employee.loggedIn.isEmpty()){
+			Employee.loggedIn.add(Employee.names.get(employeeIndex));
+			Employee.startTimeMs.add(epoch);
+			SalesManager.showOrderScreen(employeeIndex);
+			
+		}else{
+			//If there is an employee signed in already, it doesn't open a new screen
+			Employee.loggedIn.add(Employee.names.get(employeeIndex));
+			Employee.startTimeMs.add(epoch);
+			
+			System.out.println(employeeIndex);
+			
+			
+		}
+		//Employee.loggedIn.add(employeeIndex);
+		//SalesManager.showOrderScreen(employeeIndex, epoch);
 		
-		SalesManager.showOrderScreen(employeeIndex, epoch);
 		System.out.println(epoch);
 		
 	}
-	public static void logout(){
-		//Saves all information and displays the login screen after an employee logs out 
+	public void showLogoutScreen(){
+		loginLogout = "logout";
+		showLoginScreen();
+	}
+	public void logout(int employeeIndex){
+		//Gets the time when the shift ended to calculate how long the employee worked
+		long epoch = System.currentTimeMillis();		
+		
+		try{						
+			double hoursWorked = (epoch - Employee.startTimeMs.get(Employee.loggedIn.indexOf(Employee.names.get(employeeIndex))))/3600000.0;
+			//Adds the hoursWorked to the employee's total hours worked 
+			Employee.hours.set(employeeIndex, Employee.hours.get(employeeIndex) + hoursWorked);		//Adds the time worked to the array - will be updated to the database 
+			
+			//Removes the startTime that was originally stored in the array - just in case the employee logs in again, a new timer starts
+			Employee.startTimeMs.remove(Employee.loggedIn.indexOf(Employee.names.get(employeeIndex))); 	//Change start time to 0 so that if the employee logs in again, the time is reset
+			
+			//Removes the employee name from the loggedIn list 
+			Employee.loggedIn.remove(Employee.names.get(employeeIndex));	
+			
+			
+		}catch(IndexOutOfBoundsException e){
+			e.printStackTrace();
+			JOptionPane.showMessageDialog(loginFrame, "EMPLOYEE NOT LOGGED IN", "Logout Error", JOptionPane.ERROR_MESSAGE);
+		}
+		
+		
+		
+		if (Employee.loggedIn.isEmpty()){
+			// If there are no more employees signed in - close the program 
+			SalesManager.mainFrame.dispose();	// Closes the program
+			
+		}
+		
 		
 	}
+	
 
 
 	

@@ -69,6 +69,7 @@ public class DatabaseManager extends Employee{
 				Employee.pins.add(Integer.parseInt(employees.getString("Pin")));
 				
 				
+				
 			}
 			
 			ResultSet drinks = sqlState.executeQuery(showDrinks);

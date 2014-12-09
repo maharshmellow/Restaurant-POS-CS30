@@ -1,4 +1,5 @@
 package system;
+import system.*;
 import items.Drinks;
 import items.Food;
 import items.Products;
@@ -15,6 +16,7 @@ import java.io.IOException;
 import java.math.BigDecimal;
 import java.util.ArrayList;
 import java.util.List;
+
 
 import javax.imageio.ImageIO;
 import javax.swing.BorderFactory;
@@ -47,7 +49,9 @@ public class SalesManager extends LoginManager implements ActionListener{
 	static double screenWidth = screenSize.getWidth();
 	//double screenHeight = screenSize.getHeight();
 	
-	public static void showOrderScreen(int employeeIndex, double shiftStartTimeMs){
+	public static void showOrderScreen(int employeeIndex){
+		
+		
 		// Shows the main menu for employees ( some things restricted ) 
 		mainFrame = new JFrame("Starbucks POS");
 		mainPanel = new JPanel();
@@ -535,6 +539,9 @@ public class SalesManager extends LoginManager implements ActionListener{
 			public void actionPerformed(ActionEvent arg0) {
 				//Call the login screen function
 				//TODO
+				LoginManager loginManager = new LoginManager();
+				loginManager.showLoginScreen();
+				
 			}
 			
 		});
@@ -544,6 +551,8 @@ public class SalesManager extends LoginManager implements ActionListener{
 			public void actionPerformed(ActionEvent arg0){
 				//Call the logout screen - show the login screen but log that person out
 				//TODO
+				LoginManager loginManager = new LoginManager();
+				loginManager.showLogoutScreen();
 			}
 		});
 		
@@ -552,7 +561,7 @@ public class SalesManager extends LoginManager implements ActionListener{
 			@Override
 			public void actionPerformed(ActionEvent arg0){
 				//Call the settings screen - ask for the manager / admin login - store pin in the program (Edit from program / settings screen)
-				//after getting coorect pin, open the settings screen with the sales information and the employee information
+				//after getting correct pin, open the settings screen with the sales information and the employee information
 				
 				//TODO showSettings();
 			}
