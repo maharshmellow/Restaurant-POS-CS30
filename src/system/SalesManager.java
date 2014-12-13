@@ -4,6 +4,7 @@ import items.Drinks;
 import items.Food;
 import items.Products;
 import system.LoginManager;
+
 import java.awt.Color;
 import java.awt.Dimension;
 import java.awt.Font;
@@ -18,6 +19,7 @@ import java.util.ArrayList;
 import java.util.List;
 
 
+
 import javax.imageio.ImageIO;
 import javax.swing.BorderFactory;
 import javax.swing.ImageIcon;
@@ -28,6 +30,7 @@ import javax.swing.JPanel;
 import javax.swing.JScrollPane;
 import javax.swing.JTable;
 import javax.swing.ListSelectionModel;
+import javax.swing.SwingConstants;
 import javax.swing.table.DefaultTableModel;
 
 import system.LoginManager;
@@ -483,6 +486,17 @@ public class SalesManager extends LoginManager implements ActionListener{
 			
 		});
 		
+		completeOrder.addActionListener(new ActionListener(){
+			
+			@Override
+			public void actionPerformed(ActionEvent e){
+				completeOrder(getOrderTotal());
+				
+			}
+		});
+		
+	
+		
 		
 		
 		
@@ -582,13 +596,94 @@ public class SalesManager extends LoginManager implements ActionListener{
 		
 	}
 	
+	
 	public static void updatePriceIndicator(){
-		Double  price = 0.0;
+		
+		priceIndicator.setText("Total: $" + String.format("%.2f", getOrderTotal()));
+	}
+	
+	public static double getOrderTotal(){
+		Double  orderTotal = 0.0;
 		for (int i = 0; i < orderPrices.size(); i++){
-			price += orderPrices.get(i);
+			orderTotal += orderPrices.get(i);
 		}
-		price = price * 1.05;		//GST
-		priceIndicator.setText("Total: $" + String.format("%.2f", price));
+		orderTotal = orderTotal * 1.05;		//GST
+		
+		return(orderTotal);
+		
+	}
+	
+	public static void completeOrder(double orderTotal){
+		//Shows the credit/debit/giftcard/cash screen
+		
+		mainFrame.setVisible(false);//Make the order selection screen invisible until the order is complete
+		
+		JFrame orderFrame = new JFrame("Starbucks POS");
+		JPanel orderPanel = new JPanel();
+		orderPanel.setLayout(null);
+		
+		BufferedImage creditDebitCardImage = null;		
+		BufferedImage giftCardImage = null;
+		BufferedImage cashImage = null;
+		BufferedImage backImage = null;
+		try {
+			creditDebitCardImage = ImageIO.read(new File("src/files/creditDebitCard.png"));			
+			giftCardImage = ImageIO.read(new File("src/files/giftCard.png"));
+			cashImage = ImageIO.read(new File("src/files/cash.png"));
+			backImage = ImageIO.read(new File("src/files/backArrow.png"));
+			//TODO add the backArrow to the panel - put it at the top left - when clicked set mainFrame to visible
+		} catch (IOException e) {
+			// TODO Auto-generated catch block
+			e.printStackTrace();
+		}
+	    
+			
+		JButton creditDebitCardButton = new JButton(new ImageIcon(creditDebitCardImage));
+		JButton giftCardButton = new JButton(new ImageIcon(giftCardImage));
+		JButton cashButton = new JButton(new ImageIcon(cashImage));
+		JButton backButton = new JButton(new ImageIcon(backImage));
+		JLabel creditDebitLabel = new JLabel ("Credit/Debit");
+		JLabel giftLabel = new JLabel ("Gift Card");
+		JLabel cashLabel = new JLabel ("Cash");
+		
+		
+		int buttonSize = 128;
+		int leftMargin = (int) ((screenWidth / 3) - (buttonSize / 2));
+		int centerMargin = (int) ((screenWidth / 2) - (buttonSize/2));
+		int rightMargin = (int) ((screenWidth) - leftMargin - buttonSize);
+		int gap = 100;
+		
+		creditDebitCardButton.setBounds(centerMargin - gap - buttonSize, 350, 128, 128);
+		creditDebitLabel.setBounds(centerMargin - gap - buttonSize, 480, 128, 75);
+		creditDebitLabel.setFont(new Font("Arial", Font.PLAIN, 15));
+		creditDebitLabel.setHorizontalAlignment(SwingConstants.CENTER);
+		
+		giftCardButton.setBounds(centerMargin, 350, 128, 128);
+		giftLabel.setBounds(centerMargin, 480, 128, 75);
+		giftLabel.setFont(new Font("Arial", Font.PLAIN, 15));
+		giftLabel.setHorizontalAlignment(SwingConstants.CENTER);
+		
+		cashButton.setBounds(centerMargin + (buttonSize) + gap, 350, 128, 128);
+		cashLabel.setBounds(centerMargin + buttonSize + gap, 480, 128, 75);
+		cashLabel.setFont(new Font("Arial", Font.PLAIN, 15));
+		cashLabel.setHorizontalAlignment(SwingConstants.CENTER);
+		
+		//TODO fix the positioning of the buttons
+		orderPanel.add(creditDebitCardButton);
+		orderPanel.add(creditDebitLabel);
+		orderPanel.add(giftCardButton);
+		orderPanel.add(giftLabel);
+		orderPanel.add(cashButton);
+		orderPanel.add(cashLabel);
+		
+		
+		orderFrame.add(orderPanel);
+		orderFrame.setUndecorated(true);
+		orderFrame.setExtendedState(mainFrame.MAXIMIZED_BOTH);  
+		orderFrame.setDefaultCloseOperation(JFrame.EXIT_ON_CLOSE);
+		orderFrame.setVisible(true);
+		
+		
 	}
 	
 

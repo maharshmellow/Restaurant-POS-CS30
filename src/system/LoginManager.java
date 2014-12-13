@@ -84,10 +84,10 @@ public class LoginManager implements ActionListener{
 		//Login screen preferences - will change the login screen layout depending on what values are used
 		int gap = 10;
 		int buttonSize = 120;
-		int leftMargin = (int) Math.round(((screenWidth / 2) - (((3 * buttonSize) + (3*gap))/2)));
+		int leftMargin = (int) Math.round(((screenWidth / 2) - (((3 * buttonSize) + (3*gap))/2)));		//sets the leftMargin so that the entire login pad is centered on the screen
 		int topMargin = 70;
 				
-		//DON'T EDIT - Positions the buttons and passwordfield using the above values
+		//DON'T EDIT - Positions the buttons and passwordField using the above values
 		passwordField.setBounds(leftMargin, topMargin - (gap * 6),(buttonSize*3) + (gap *2) , 40);
 		key1.setBounds(leftMargin, topMargin, buttonSize, buttonSize);
 					  // vvv where it starts from the left + the width of how many buttons there are on the left + gap between buttons
@@ -344,7 +344,7 @@ public class LoginManager implements ActionListener{
 			Employee.hours.set(employeeIndex, Employee.hours.get(employeeIndex) + hoursWorked);		//Adds the time worked to the array - will be updated to the database 
 			
 			//Removes the startTime that was originally stored in the array - just in case the employee logs in again, a new timer starts
-			Employee.startTimeMs.remove(Employee.loggedIn.indexOf(Employee.names.get(employeeIndex))); 	//Change start time to 0 so that if the employee logs in again, the time is reset
+			Employee.startTimeMs.remove(Employee.loggedIn.indexOf(Employee.names.get(employeeIndex))); 
 			
 			//Removes the employee name from the loggedIn list 
 			Employee.loggedIn.remove(Employee.names.get(employeeIndex));	
@@ -359,6 +359,7 @@ public class LoginManager implements ActionListener{
 		
 		if (Employee.loggedIn.isEmpty()){
 			// If there are no more employees signed in - close the program 
+			POS.exit();
 			SalesManager.mainFrame.dispose();	// Closes the program
 			
 		}

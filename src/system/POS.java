@@ -28,10 +28,11 @@ public class POS {
 		
 		loginManager = new LoginManager();
 		loginManager.showLoginScreen();	
-			
 		
 		
-	}public static void exit(){
+		
+	}
+	public static void exit(){
 		//TODO Database connection - send information back 
 	}
 	
