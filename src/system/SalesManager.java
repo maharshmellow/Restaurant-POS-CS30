@@ -61,8 +61,9 @@ public class SalesManager extends LoginManager implements ActionListener{
 		mainPanel.setLayout(null);
 
 		int gap = 5;
-		int buttonWidth = 100;
-		int buttonHeight = 100;
+		int gapBetweenGroups = 100;
+		int buttonWidth = 150;
+		int buttonHeight = 150;
 		int leftMargin = 30;
 		int topMargin = 100;	
 		
@@ -73,8 +74,8 @@ public class SalesManager extends LoginManager implements ActionListener{
 			e.printStackTrace();
 		}
 		setupDrinks(gap, buttonWidth, buttonHeight, leftMargin, topMargin);
-		setupFood(gap, buttonWidth, buttonHeight, leftMargin, topMargin);
-		setupProducts(gap, buttonWidth, buttonHeight, leftMargin, topMargin);
+		setupFood(gap, gapBetweenGroups, buttonWidth, buttonHeight, leftMargin, topMargin);
+		setupProducts(gap, gapBetweenGroups, buttonWidth, buttonHeight, leftMargin, topMargin);
 		setupGrid();
 		setupSettings();
 		mainFrame.add(mainPanel);
@@ -224,7 +225,7 @@ public class SalesManager extends LoginManager implements ActionListener{
 	}
 	
 	
-	public static void setupFood(int gap, int buttonWidth, int buttonHeight, int leftMargin, int topMargin){
+	public static void setupFood(int gap, int gapBetweenGroups, int buttonWidth, int buttonHeight, int leftMargin, int topMargin){
 		List<String> column1Food = new ArrayList();
 		List<Double> column1Prices = new ArrayList();
 		List<String> column2Food = new ArrayList();
@@ -260,7 +261,7 @@ public class SalesManager extends LoginManager implements ActionListener{
 			JButton button = new JButton(text);	
 			button.setContentAreaFilled(false);
 			button.setBorder(BorderFactory.createMatteBorder(1, 1, 1, 1, Color.BLACK));
-			button.setBounds(leftMargin + (4 * buttonWidth)+(4*gap), (topMargin + (i * buttonHeight)) + (i * gap) , buttonWidth, buttonHeight);
+			button.setBounds(leftMargin + (3 * buttonWidth)+(3*gap) + gapBetweenGroups, (topMargin + (i * buttonHeight)) + (i * gap) , buttonWidth, buttonHeight);
 			
 			button.setActionCommand(column1Food.get(i));
 			button.addActionListener(new ActionListener(){
@@ -290,7 +291,7 @@ public class SalesManager extends LoginManager implements ActionListener{
 			JButton button = new JButton(text);	
 			button.setContentAreaFilled(false);
 			button.setBorder(BorderFactory.createMatteBorder(1, 1, 1, 1, Color.BLACK));
-			button.setBounds(leftMargin + (5 * buttonWidth)+(5*gap) , (topMargin + (i * buttonHeight)) + (i * gap) , buttonWidth, buttonHeight);
+			button.setBounds(leftMargin + (4 * buttonWidth)+(4*gap) + (gapBetweenGroups) , (topMargin + (i * buttonHeight)) + (i * gap) , buttonWidth, buttonHeight);
 			
 			button.setActionCommand(column1Food.get(i));
 			button.addActionListener(new ActionListener(){
@@ -308,7 +309,7 @@ public class SalesManager extends LoginManager implements ActionListener{
 		}
 		
 	}
-	public static void setupProducts(int gap, int buttonWidth, int buttonHeight, int leftMargin, int topMargin){
+	public static void setupProducts(int gap, int gapBetweenGroups, int buttonWidth, int buttonHeight, int leftMargin, int topMargin){
 		List<String> column1Products = new ArrayList();
 		List<Double> column1Prices = new ArrayList();
 		List<String> column2Products = new ArrayList();
@@ -344,7 +345,7 @@ public class SalesManager extends LoginManager implements ActionListener{
 			JButton button = new JButton(text);	
 			button.setContentAreaFilled(false);
 			button.setBorder(BorderFactory.createMatteBorder(1, 1, 1, 1, Color.BLUE));
-			button.setBounds(leftMargin + (7 * buttonWidth)+(6*gap), (topMargin + (i * buttonHeight)) + (i *gap) , buttonWidth, buttonHeight);
+			button.setBounds(leftMargin + (5 * buttonWidth)+(5*gap) + (gapBetweenGroups * 2), (topMargin + (i * buttonHeight)) + (i *gap) , buttonWidth, buttonHeight);
 			
 			button.setActionCommand(column1Products.get(i));
 			button.addActionListener(new ActionListener(){
@@ -375,7 +376,7 @@ public class SalesManager extends LoginManager implements ActionListener{
 			JButton button = new JButton(text);	
 			button.setContentAreaFilled(false);
 			button.setBorder(BorderFactory.createMatteBorder(1, 1, 1, 1, Color.BLUE));
-			button.setBounds(leftMargin + (8 * buttonWidth)+(7*gap) , (topMargin + (i * buttonHeight)) + (i * gap) , buttonWidth, buttonHeight);
+			button.setBounds(leftMargin + (6 * buttonWidth)+(6*gap) + (gapBetweenGroups*2), (topMargin + (i * buttonHeight)) + (i * gap) , buttonWidth, buttonHeight);
 			
 			button.setActionCommand(column1Products.get(i));
 			button.addActionListener(new ActionListener(){
@@ -407,7 +408,7 @@ public class SalesManager extends LoginManager implements ActionListener{
 		
 		orderTable = new JTable(model);		
 		JScrollPane scrollPane = new JScrollPane();
-		scrollPane.setBounds(1000, 100, 300, 350);
+		scrollPane.setBounds((int) screenWidth - 400, 100, 300, 700);
 		scrollPane.getViewport().setBackground(Color.WHITE);
 		scrollPane.getVerticalScrollBar().setPreferredSize(new Dimension(40, 0));		//Increases the scrollbar width
 		
@@ -422,7 +423,7 @@ public class SalesManager extends LoginManager implements ActionListener{
 		priceIndicator = new JLabel("Total: $0.00");
 		priceIndicator.setForeground(Color.RED);
 		priceIndicator.setFont(new Font("Sans Serif", Font.BOLD, 30));
-		priceIndicator.setBounds(1000, 450, 300, 40);
+		priceIndicator.setBounds((int)screenWidth - 400, 850, 300, 50);
 		
 		
 		//Buttons Setup
@@ -500,9 +501,9 @@ public class SalesManager extends LoginManager implements ActionListener{
 		
 		
 		
-		removeSelected.setBounds(1000, 500, 300, 40);
-		discardOrder.setBounds(1000, 545, 145, 145);
-		completeOrder.setBounds(1155, 545, 145, 145);
+		removeSelected.setBounds((int) screenWidth - 400, 900, 300, 40);
+		discardOrder.setBounds((int) screenWidth - 400, 950, 145, 145);
+		completeOrder.setBounds((int) screenWidth - 250, 950, 145, 145);
 		
 		//Sales.showOrderScreen(); when the completeOrder button is clicked
 		
