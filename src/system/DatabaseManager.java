@@ -36,7 +36,7 @@ public class DatabaseManager extends Employee{
 		
 		loadingPanel.add(statusLabel);
 		loadingFrame.add(loadingPanel);		
-		loadingFrame.setBounds(400, 400, 300, 50);		
+		loadingFrame.setBounds(400, 400, 300, 70);		
 		loadingFrame.setDefaultCloseOperation(JFrame.EXIT_ON_CLOSE);
 		loadingFrame.setVisible(true);
 		
@@ -122,4 +122,7 @@ public class DatabaseManager extends Employee{
 		}
 	}
 	
+	public static void updateTransactions(double transactionTotal){
+		
+	}
 }

@@ -48,6 +48,7 @@ public class SalesManager extends LoginManager implements ActionListener{
 	
 	public static JLabel priceIndicator;
 	
+	public static JFrame orderFrame;
 	static Dimension screenSize = Toolkit.getDefaultToolkit().getScreenSize();
 	static double screenWidth = screenSize.getWidth();
 	//double screenHeight = screenSize.getHeight();
@@ -528,7 +529,7 @@ public class SalesManager extends LoginManager implements ActionListener{
 			settingsImage = ImageIO.read(new File("src/files/settings.png"));
 			exitImage = ImageIO.read(new File("src/files/exit.png"));
 		} catch (IOException e) {
-			// TODO Auto-generated catch block
+			
 			e.printStackTrace();
 		}
 	    
@@ -565,7 +566,6 @@ public class SalesManager extends LoginManager implements ActionListener{
 			@Override 
 			public void actionPerformed(ActionEvent arg0){
 				//Call the logout screen - show the login screen but log that person out
-				//TODO
 				LoginManager loginManager = new LoginManager();
 				loginManager.showLogoutScreen();
 			}
@@ -617,9 +617,8 @@ public class SalesManager extends LoginManager implements ActionListener{
 	public static void completeOrder(double orderTotal){
 		//Shows the credit/debit/giftcard/cash screen
 		
-		mainFrame.setVisible(false);//Make the order selection screen invisible until the order is complete
 		
-		JFrame orderFrame = new JFrame("Starbucks POS");
+		orderFrame = new JFrame("Starbucks POS");
 		JPanel orderPanel = new JPanel();
 		orderPanel.setLayout(null);
 		
@@ -632,9 +631,7 @@ public class SalesManager extends LoginManager implements ActionListener{
 			giftCardImage = ImageIO.read(new File("src/files/giftCard.png"));
 			cashImage = ImageIO.read(new File("src/files/cash.png"));
 			backImage = ImageIO.read(new File("src/files/backArrow.png"));
-			//TODO add the backArrow to the panel - put it at the top left - when clicked set mainFrame to visible
 		} catch (IOException e) {
-			// TODO Auto-generated catch block
 			e.printStackTrace();
 		}
 	    
@@ -643,9 +640,48 @@ public class SalesManager extends LoginManager implements ActionListener{
 		JButton giftCardButton = new JButton(new ImageIcon(giftCardImage));
 		JButton cashButton = new JButton(new ImageIcon(cashImage));
 		JButton backButton = new JButton(new ImageIcon(backImage));
+		
 		JLabel creditDebitLabel = new JLabel ("Credit/Debit");
 		JLabel giftLabel = new JLabel ("Gift Card");
 		JLabel cashLabel = new JLabel ("Cash");
+		
+		
+		//Actionlisteners 
+		
+		creditDebitCardButton.addActionListener(new ActionListener(){
+
+			@Override
+			public void actionPerformed(ActionEvent arg0) {
+				processPayment(0);				
+			}
+			
+		});
+		
+		giftCardButton.addActionListener(new ActionListener(){
+			
+			@Override
+			public void actionPerformed(ActionEvent arg0){
+				processPayment(1);
+			}
+		});
+		
+		cashButton.addActionListener(new ActionListener(){
+			
+			@Override
+			public void actionPerformed(ActionEvent arg0){
+				processPayment(2);
+			}
+		});
+		
+		backButton.addActionListener(new ActionListener(){
+			
+			@Override 
+			public void actionPerformed(ActionEvent arg0){
+				
+				//mainPanel.setVisible(true);
+				orderFrame.dispose();
+			}
+		});
 		
 		
 		int buttonSize = 128;
@@ -653,6 +689,9 @@ public class SalesManager extends LoginManager implements ActionListener{
 		int centerMargin = (int) ((screenWidth / 2) - (buttonSize/2));
 		int rightMargin = (int) ((screenWidth) - leftMargin - buttonSize);
 		int gap = 100;
+		
+		backButton.setBounds(30, 30, 64, 64);
+		backButton.setContentAreaFilled(false);
 		
 		creditDebitCardButton.setBounds(centerMargin - gap - buttonSize, 350, 128, 128);
 		creditDebitLabel.setBounds(centerMargin - gap - buttonSize, 480, 128, 75);
@@ -669,7 +708,8 @@ public class SalesManager extends LoginManager implements ActionListener{
 		cashLabel.setFont(new Font("Arial", Font.PLAIN, 15));
 		cashLabel.setHorizontalAlignment(SwingConstants.CENTER);
 		
-		//TODO fix the positioning of the buttons
+		
+		orderPanel.add(backButton);
 		orderPanel.add(creditDebitCardButton);
 		orderPanel.add(creditDebitLabel);
 		orderPanel.add(giftCardButton);
@@ -683,6 +723,44 @@ public class SalesManager extends LoginManager implements ActionListener{
 		orderFrame.setExtendedState(mainFrame.MAXIMIZED_BOTH);  
 		orderFrame.setDefaultCloseOperation(JFrame.EXIT_ON_CLOSE);
 		orderFrame.setVisible(true);
+		
+		
+	}
+	public static void processPayment(int type){
+		orderFrame.dispose();			//Closes the frame that shows the 3 buttons (credit/debit, giftcard, cash);
+		
+		JFrame processingFrame = new JFrame("Processing Transaction");
+		JPanel processingPanel = new JPanel();
+		JLabel processingLabel = new JLabel();
+		
+		processingLabel.setFont(new Font("Arial", Font.BOLD, 13));
+		
+		processingPanel.add(processingLabel);
+		processingFrame.add(processingPanel);
+		
+		processingFrame.setBounds(500, 500, 400, 20);
+		processingFrame.setUndecorated(true);
+		processingFrame.setDefaultCloseOperation(JFrame.EXIT_ON_CLOSE);
+		processingFrame.setVisible(true);
+		
+		if (type == 0){
+			//Credit or Debit Card Payment
+			processingLabel.setText("Processing Credit/Debit Transaction");
+			//TODO Update Database
+		}
+		else if (type == 1){
+			//Gift Card Payment
+			processingLabel.setText("Processing Gift Card Transaction");
+			//TODO Update Database
+		}
+		else if (type == 2){
+			//Cash Payment 			
+			processingLabel.setText("Processing Cash Transaction");
+			//TODO Update Database
+		}
+		
+		
+		
 		
 		
 	}

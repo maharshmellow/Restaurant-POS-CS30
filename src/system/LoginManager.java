@@ -82,10 +82,10 @@ public class LoginManager implements ActionListener{
 		JButton keyEnter = new JButton("Enter");
 		
 		//Login screen preferences - will change the login screen layout depending on what values are used
-		int gap = 10;
-		int buttonSize = 120;
+		int gap = 15;
+		int buttonSize = 200;
 		int leftMargin = (int) Math.round(((screenWidth / 2) - (((3 * buttonSize) + (3*gap))/2)));		//sets the leftMargin so that the entire login pad is centered on the screen
-		int topMargin = 70;
+		int topMargin = 100;
 				
 		//DON'T EDIT - Positions the buttons and passwordField using the above values
 		passwordField.setBounds(leftMargin, topMargin - (gap * 6),(buttonSize*3) + (gap *2) , 40);
@@ -340,6 +340,7 @@ public class LoginManager implements ActionListener{
 		
 		try{						
 			double hoursWorked = (epoch - Employee.startTimeMs.get(Employee.loggedIn.indexOf(Employee.names.get(employeeIndex))))/3600000.0;
+			
 			//Adds the hoursWorked to the employee's total hours worked 
 			Employee.hours.set(employeeIndex, Employee.hours.get(employeeIndex) + hoursWorked);		//Adds the time worked to the array - will be updated to the database 
 			
