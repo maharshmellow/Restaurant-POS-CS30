@@ -62,9 +62,9 @@ public class SalesManager extends LoginManager implements ActionListener{
 		mainPanel.setLayout(null);
 
 		int gap = 5;
-		int gapBetweenGroups = 100;
-		int buttonWidth = 150;
-		int buttonHeight = 150;
+		int gapBetweenGroups = 75;
+		int buttonWidth = 100;
+		int buttonHeight = 100;
 		int leftMargin = 30;
 		int topMargin = 100;	
 		
@@ -409,11 +409,11 @@ public class SalesManager extends LoginManager implements ActionListener{
 		
 		orderTable = new JTable(model);		
 		JScrollPane scrollPane = new JScrollPane();
-		scrollPane.setBounds((int) screenWidth - 400, 100, 300, 700);
+		scrollPane.setBounds((int) screenWidth - 400, 100, 300, 450);
 		scrollPane.getViewport().setBackground(Color.WHITE);
 		scrollPane.getVerticalScrollBar().setPreferredSize(new Dimension(40, 0));		//Increases the scrollbar width
 		
-		orderTable.setBounds(10, 10, 300, 500);
+		orderTable.setBounds(10, 10, 300, 450);
 		orderTable.setFont(new Font("Cambria", Font.PLAIN, 18));
 		orderTable.setRowHeight(27);
 		orderTable.setSelectionMode(ListSelectionModel.SINGLE_SELECTION);
@@ -424,7 +424,7 @@ public class SalesManager extends LoginManager implements ActionListener{
 		priceIndicator = new JLabel("Total: $0.00");
 		priceIndicator.setForeground(Color.RED);
 		priceIndicator.setFont(new Font("Sans Serif", Font.BOLD, 30));
-		priceIndicator.setBounds((int)screenWidth - 400, 850, 300, 50);
+		priceIndicator.setBounds((int)screenWidth - 400, 550, 300, 50);
 		
 		
 		//Buttons Setup
@@ -496,9 +496,9 @@ public class SalesManager extends LoginManager implements ActionListener{
 		
 		
 		
-		removeSelected.setBounds((int) screenWidth - 400, 900, 300, 40);
-		discardOrder.setBounds((int) screenWidth - 400, 950, 145, 145);
-		completeOrder.setBounds((int) screenWidth - 250, 950, 145, 145);
+		removeSelected.setBounds((int) screenWidth - 400, 615, 300, 40);
+		discardOrder.setBounds((int) screenWidth - 400, 650, 145, 145);
+		completeOrder.setBounds((int) screenWidth - 250, 650, 145, 145);
 		
 		//Sales.showOrderScreen(); when the completeOrder button is clicked
 		

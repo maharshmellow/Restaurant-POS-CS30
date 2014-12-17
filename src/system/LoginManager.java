@@ -83,7 +83,7 @@ public class LoginManager implements ActionListener{
 		
 		//Login screen preferences - will change the login screen layout depending on what values are used
 		int gap = 15;
-		int buttonSize = 200;
+		int buttonSize = 100;
 		int leftMargin = (int) Math.round(((screenWidth / 2) - (((3 * buttonSize) + (3*gap))/2)));		//sets the leftMargin so that the entire login pad is centered on the screen
 		int topMargin = 100;
 				
@@ -108,18 +108,18 @@ public class LoginManager implements ActionListener{
 		passwordField.setFont(new Font("Calibri", Font.BOLD, 50));
 		
 		//Sets the fonts of the buttons
-		key1.setFont(new Font("Arial", Font.BOLD, 50));
-		key2.setFont(new Font("Arial", Font.BOLD, 50));
-		key3.setFont(new Font("Arial", Font.BOLD, 50));
-		key4.setFont(new Font("Arial", Font.BOLD, 50));
-		key5.setFont(new Font("Arial", Font.BOLD, 50));
-		key6.setFont(new Font("Arial", Font.BOLD, 50));
-		key7.setFont(new Font("Arial", Font.BOLD, 50));
-		key8.setFont(new Font("Arial", Font.BOLD, 50));
-		key9.setFont(new Font("Arial", Font.BOLD, 50));
-		key0.setFont(new Font("Arial", Font.BOLD, 50));
-		keyBackspace.setFont(new Font("Arial", Font.ITALIC, 30));
-		keyEnter.setFont(new Font("Arial", Font.ITALIC, 30));
+		key1.setFont(new Font("Arial", Font.BOLD, 30));
+		key2.setFont(new Font("Arial", Font.BOLD, 30));
+		key3.setFont(new Font("Arial", Font.BOLD, 30));
+		key4.setFont(new Font("Arial", Font.BOLD, 30));
+		key5.setFont(new Font("Arial", Font.BOLD, 30));
+		key6.setFont(new Font("Arial", Font.BOLD, 30));
+		key7.setFont(new Font("Arial", Font.BOLD, 30));
+		key8.setFont(new Font("Arial", Font.BOLD, 30));
+		key9.setFont(new Font("Arial", Font.BOLD, 30));
+		key0.setFont(new Font("Arial", Font.BOLD, 30));
+		keyBackspace.setFont(new Font("Arial", Font.ITALIC, 20));
+		keyEnter.setFont(new Font("Arial", Font.ITALIC, 20));
 		
 		//Changes the colours of the backspace and enter buttons
 		keyBackspace.setForeground(Color.RED);
