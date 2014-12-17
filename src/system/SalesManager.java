@@ -460,7 +460,6 @@ public class SalesManager extends LoginManager implements ActionListener{
 			discardIcon = ImageIO.read(new File("src/files/cancel_order.png"));
 			completeIcon = ImageIO.read(new File("src/files/complete_order.png"));
 		} catch (IOException e) {
-			// TODO Auto-generated catch block
 			e.printStackTrace();
 		}
 	    
@@ -476,13 +475,8 @@ public class SalesManager extends LoginManager implements ActionListener{
 			public void actionPerformed(ActionEvent e) {
 				 
 				//Have to do it backwards because the number of rows gets smaller each time - the other way produces errors - tries to delete nothing 
-				for (int i = model.getRowCount() - 1; i >= 0; i--){
-					System.out.println(model.getRowCount());					
-					model.removeRow(i);
-				}
-				orderNames.clear();
-				orderPrices.clear();
 				
+				clearTable();
 				updatePriceIndicator();
 			}
 			
@@ -516,6 +510,17 @@ public class SalesManager extends LoginManager implements ActionListener{
 		mainPanel.add(removeSelected);
 		mainPanel.add(discardOrder);
 		mainPanel.add(completeOrder);
+	}
+	
+	public static void clearTable(){
+		//TODO
+		
+		for (int i = model.getRowCount() - 1; i >= 0; i--){
+			System.out.println(model.getRowCount());					
+			model.removeRow(i);
+		}
+		orderNames.clear();
+		orderPrices.clear();
 	}
 	
 	public static void setupSettings(){
@@ -554,7 +559,6 @@ public class SalesManager extends LoginManager implements ActionListener{
 			@Override
 			public void actionPerformed(ActionEvent arg0) {
 				//Call the login screen function
-				//TODO
 				LoginManager loginManager = new LoginManager();
 				loginManager.showLoginScreen();
 				
@@ -727,7 +731,7 @@ public class SalesManager extends LoginManager implements ActionListener{
 		
 	}
 	public static void processPayment(int type){
-		orderFrame.dispose();			//Closes the frame that shows the 3 buttons (credit/debit, giftcard, cash);
+		//orderFrame.dispose();			//Closes the frame that shows the 3 buttons (credit/debit, giftcard, cash);
 		
 		JFrame processingFrame = new JFrame("Processing Transaction");
 		JPanel processingPanel = new JPanel();
@@ -743,25 +747,49 @@ public class SalesManager extends LoginManager implements ActionListener{
 		processingFrame.setDefaultCloseOperation(JFrame.EXIT_ON_CLOSE);
 		processingFrame.setVisible(true);
 		
+		double total = 0;
+		String order = "";
+		long epoch = System.currentTimeMillis();
+		String payment = "";
+		
+		
+		
+		
 		if (type == 0){
 			//Credit or Debit Card Payment
 			processingLabel.setText("Processing Credit/Debit Transaction");
+			payment = "Credit/Debit";
 			//TODO Update Database
 		}
 		else if (type == 1){
 			//Gift Card Payment
 			processingLabel.setText("Processing Gift Card Transaction");
+			payment = "Gift Card";
 			//TODO Update Database
+			
 		}
 		else if (type == 2){
 			//Cash Payment 			
 			processingLabel.setText("Processing Cash Transaction");
+			payment = "Cash";
 			//TODO Update Database
 		}
 		
+		//Get items ordered 
+		for (int i = 0; i < orderNames.size(); i++){
+			order += "'" + orderNames.get(i) + "'";
+		}
 		
+		System.out.println("Order Total: " + Double.parseDouble(String.format("%.2f", getOrderTotal())));
+		System.out.println("Order: " + order);
+		System.out.println("Time: " + epoch);
+		System.out.println("Payment: " + payment);
 		
+		orderNames.clear();
+		orderPrices.clear();
 		
+		processingFrame.dispose();
+		orderFrame.dispose();
 		
 	}
 	
