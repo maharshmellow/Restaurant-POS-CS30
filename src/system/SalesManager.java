@@ -477,7 +477,6 @@ public class SalesManager extends LoginManager implements ActionListener{
 				//Have to do it backwards because the number of rows gets smaller each time - the other way produces errors - tries to delete nothing 
 				
 				clearTable();
-				updatePriceIndicator();
 			}
 			
 		});
@@ -513,7 +512,7 @@ public class SalesManager extends LoginManager implements ActionListener{
 	}
 	
 	public static void clearTable(){
-		//TODO
+		
 		
 		for (int i = model.getRowCount() - 1; i >= 0; i--){
 			System.out.println(model.getRowCount());					
@@ -521,6 +520,7 @@ public class SalesManager extends LoginManager implements ActionListener{
 		}
 		orderNames.clear();
 		orderPrices.clear();
+		updatePriceIndicator();
 	}
 	
 	public static void setupSettings(){
@@ -787,6 +787,8 @@ public class SalesManager extends LoginManager implements ActionListener{
 		
 		orderNames.clear();
 		orderPrices.clear();
+		clearTable();
+		
 		
 		processingFrame.dispose();
 		orderFrame.dispose();

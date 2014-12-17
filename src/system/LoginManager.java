@@ -39,6 +39,10 @@ public class LoginManager implements ActionListener{
 			passwordField.setText("");
 		}
 		
+		//Resets the border to white so that if a person failed to login once, the next time when someone logs in from the internal login screen, the red bar disappears 
+		passwordField.setBorder(BorderFactory.createMatteBorder(1, 1, 1, 1, Color.WHITE));
+		
+		
 		//Sets the Look and Feel to the system look and feel	    
 		try {
 	        UIManager.setLookAndFeel(UIManager.getSystemLookAndFeelClassName());
@@ -88,7 +92,7 @@ public class LoginManager implements ActionListener{
 		int topMargin = 100;
 				
 		//DON'T EDIT - Positions the buttons and passwordField using the above values
-		passwordField.setBounds(leftMargin, topMargin - (gap * 6),(buttonSize*3) + (gap *2) , 40);
+		passwordField.setBounds(leftMargin, topMargin - (gap * 6),(buttonSize*3) + (gap *2) , 80);
 		key1.setBounds(leftMargin, topMargin, buttonSize, buttonSize);
 					  // vvv where it starts from the left + the width of how many buttons there are on the left + gap between buttons
 		key2.setBounds(leftMargin + (buttonSize) + gap, topMargin, buttonSize, buttonSize);		
@@ -105,7 +109,7 @@ public class LoginManager implements ActionListener{
 		
 		//Sets the font of the passwordField
 		passwordField.setEditable(false);		
-		passwordField.setFont(new Font("Calibri", Font.BOLD, 50));
+		passwordField.setFont(new Font("Calibri", Font.BOLD, 150));
 		
 		//Sets the fonts of the buttons
 		key1.setFont(new Font("Arial", Font.BOLD, 30));
@@ -261,7 +265,14 @@ public class LoginManager implements ActionListener{
 		
 		if ("ENTER_KEY".equals(command)){
 			//Check Password 
-			checkPassword();
+			if (password.length() > 0){
+				//Check password if there is something entered 
+				checkPassword();
+			}
+			else{
+				//Do Nothing 
+			}
+			
 			
 		}
 		
@@ -293,9 +304,7 @@ public class LoginManager implements ActionListener{
 			else{
 				logout(employeeIndex);
 			}
-			
-			//login(employeeIndex);
-			//TODO add logout(employeeIndex); 
+						
 			
 		}else{
 			//Incorrect Login
