@@ -15,6 +15,7 @@ import javax.swing.JFrame;
 import javax.swing.JOptionPane;
 import javax.swing.JPanel;
 import javax.swing.JPasswordField;
+import javax.swing.SwingUtilities;
 import javax.swing.UIManager;
 import javax.swing.UnsupportedLookAndFeelException;
 
@@ -315,14 +316,24 @@ public class LoginManager implements ActionListener{
 		
 
 	}
-	public void login(int employeeIndex){
+	public void login(final int employeeIndex){
 		// Show the employee menu - start the timer of hours worked
 		long epoch = System.currentTimeMillis();
 		//if there is an employee signed in --- don't open another screen - just add the new employee to the list
 		if (Employee.loggedIn.isEmpty()){
 			Employee.loggedIn.add(Employee.names.get(employeeIndex));
 			Employee.startTimeMs.add(epoch);
-			SalesManager.showOrderScreen(employeeIndex);
+			//TODO print starTimeMs
+			System.out.println("\n\nLOGGED IN\n\n");
+			System.out.println("Employee Name: " + Employee.names.get(employeeIndex));
+			System.out.println("Employee ");
+			
+			SwingUtilities.invokeLater(new Runnable(){
+				public void run(){
+					SalesManager.showOrderScreen(employeeIndex);
+				}
+			});
+			//SalesManager.showOrderScreen(employeeIndex);
 			
 		}else{
 			//If there is an employee signed in already, it doesn't open a new screen
@@ -352,6 +363,7 @@ public class LoginManager implements ActionListener{
 			
 			//Adds the hoursWorked to the employee's total hours worked 
 			Employee.hours.set(employeeIndex, Employee.hours.get(employeeIndex) + hoursWorked);		//Adds the time worked to the array - will be updated to the database 
+			//TODO print total hours worked 
 			
 			//Removes the startTime that was originally stored in the array - just in case the employee logs in again, a new timer starts
 			Employee.startTimeMs.remove(Employee.loggedIn.indexOf(Employee.names.get(employeeIndex))); 

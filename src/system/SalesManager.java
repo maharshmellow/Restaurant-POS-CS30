@@ -1,11 +1,13 @@
 package system;
-import system.*;
+
+
 import items.Drinks;
 import items.Food;
 import items.Products;
-import system.LoginManager;
 
+import java.awt.BorderLayout;
 import java.awt.Color;
+import java.awt.Container;
 import java.awt.Dimension;
 import java.awt.Font;
 import java.awt.Toolkit;
@@ -14,11 +16,8 @@ import java.awt.event.ActionListener;
 import java.awt.image.BufferedImage;
 import java.io.File;
 import java.io.IOException;
-import java.math.BigDecimal;
 import java.util.ArrayList;
 import java.util.List;
-
-
 
 import javax.imageio.ImageIO;
 import javax.swing.BorderFactory;
@@ -27,18 +26,27 @@ import javax.swing.JButton;
 import javax.swing.JFrame;
 import javax.swing.JLabel;
 import javax.swing.JPanel;
+import javax.swing.JProgressBar;
 import javax.swing.JScrollPane;
 import javax.swing.JTable;
 import javax.swing.ListSelectionModel;
 import javax.swing.SwingConstants;
+import javax.swing.SwingUtilities;
+import javax.swing.border.Border;
 import javax.swing.table.DefaultTableModel;
-
-import system.LoginManager;
 
 public class SalesManager extends LoginManager implements ActionListener{
 	
+	public static JButton creditDebitCardButton;
+	public static JButton giftCardButton;
+	public static JButton cashButton;
+	
+	
+	
 	public static List<String> orderNames = new ArrayList();
 	public static List<Double> orderPrices = new ArrayList();
+	
+	public static List<JButton> buttons = new ArrayList();
 	
 	static JFrame mainFrame;
 	static JPanel mainPanel;
@@ -187,6 +195,7 @@ public class SalesManager extends LoginManager implements ActionListener{
 					updatePriceIndicator();					
 				}
 			});
+			buttons.add(button);
 			mainPanel.add(button);
 		}
 		
@@ -219,6 +228,7 @@ public class SalesManager extends LoginManager implements ActionListener{
 					updatePriceIndicator();					
 				}
 			});
+			buttons.add(button);
 			mainPanel.add(button);
 		}
 		
@@ -276,6 +286,7 @@ public class SalesManager extends LoginManager implements ActionListener{
 					updatePriceIndicator();					
 				}
 			});
+			buttons.add(button);
 			mainPanel.add(button);
 			
 		}
@@ -306,6 +317,7 @@ public class SalesManager extends LoginManager implements ActionListener{
 					updatePriceIndicator();					
 				}
 			});
+			buttons.add(button);
 			mainPanel.add(button);
 		}
 		
@@ -360,6 +372,7 @@ public class SalesManager extends LoginManager implements ActionListener{
 					updatePriceIndicator();					
 				}
 			});
+			buttons.add(button);
 			mainPanel.add(button);
 			
 		}
@@ -391,6 +404,7 @@ public class SalesManager extends LoginManager implements ActionListener{
 					updatePriceIndicator();					
 				}
 			});
+			buttons.add(button);
 			mainPanel.add(button);
 		}
 	}
@@ -475,8 +489,12 @@ public class SalesManager extends LoginManager implements ActionListener{
 			public void actionPerformed(ActionEvent e) {
 				 
 				//Have to do it backwards because the number of rows gets smaller each time - the other way produces errors - tries to delete nothing 
+				SwingUtilities.invokeLater(new Runnable(){
+					public void run(){
+						clearTable();
+					}
+				});
 				
-				clearTable();
 			}
 			
 		});
@@ -485,7 +503,13 @@ public class SalesManager extends LoginManager implements ActionListener{
 			
 			@Override
 			public void actionPerformed(ActionEvent e){
-				completeOrder(getOrderTotal());
+				SwingUtilities.invokeLater(new Runnable(){
+					public void run(){
+						completeOrder(getOrderTotal());
+					}
+				});
+				
+				
 				
 			}
 		});
@@ -640,9 +664,9 @@ public class SalesManager extends LoginManager implements ActionListener{
 		}
 	    
 			
-		JButton creditDebitCardButton = new JButton(new ImageIcon(creditDebitCardImage));
-		JButton giftCardButton = new JButton(new ImageIcon(giftCardImage));
-		JButton cashButton = new JButton(new ImageIcon(cashImage));
+		creditDebitCardButton = new JButton(new ImageIcon(creditDebitCardImage));
+		giftCardButton = new JButton(new ImageIcon(giftCardImage));
+		cashButton = new JButton(new ImageIcon(cashImage));
 		JButton backButton = new JButton(new ImageIcon(backImage));
 		
 		JLabel creditDebitLabel = new JLabel ("Credit/Debit");
@@ -656,7 +680,11 @@ public class SalesManager extends LoginManager implements ActionListener{
 
 			@Override
 			public void actionPerformed(ActionEvent arg0) {
-				processPayment(0);				
+				SwingUtilities.invokeLater(new Runnable(){
+					public void run(){
+						processPayment(0);
+					}
+				});				
 			}
 			
 		});
@@ -665,7 +693,12 @@ public class SalesManager extends LoginManager implements ActionListener{
 			
 			@Override
 			public void actionPerformed(ActionEvent arg0){
-				processPayment(1);
+				SwingUtilities.invokeLater(new Runnable(){
+					public void run(){
+						processPayment(1);
+					}
+				});
+				
 			}
 		});
 		
@@ -673,7 +706,11 @@ public class SalesManager extends LoginManager implements ActionListener{
 			
 			@Override
 			public void actionPerformed(ActionEvent arg0){
-				processPayment(2);
+				SwingUtilities.invokeLater(new Runnable(){
+					public void run(){
+						processPayment(2);
+					}
+				});
 			}
 		});
 		
@@ -733,19 +770,6 @@ public class SalesManager extends LoginManager implements ActionListener{
 	public static void processPayment(int type){
 		//orderFrame.dispose();			//Closes the frame that shows the 3 buttons (credit/debit, giftcard, cash);
 		
-		JFrame processingFrame = new JFrame("Processing Transaction");
-		JPanel processingPanel = new JPanel();
-		JLabel processingLabel = new JLabel();
-		
-		processingLabel.setFont(new Font("Arial", Font.BOLD, 13));
-		
-		processingPanel.add(processingLabel);
-		processingFrame.add(processingPanel);
-		
-		processingFrame.setBounds(500, 500, 400, 20);
-		processingFrame.setUndecorated(true);
-		processingFrame.setDefaultCloseOperation(JFrame.EXIT_ON_CLOSE);
-		processingFrame.setVisible(true);
 		
 		double total = 0;
 		String order = "";
@@ -757,42 +781,87 @@ public class SalesManager extends LoginManager implements ActionListener{
 		
 		if (type == 0){
 			//Credit or Debit Card Payment
-			processingLabel.setText("Processing Credit/Debit Transaction");
 			payment = "Credit/Debit";
-			//TODO Update Database
+			
+			
 		}
 		else if (type == 1){
 			//Gift Card Payment
-			processingLabel.setText("Processing Gift Card Transaction");
 			payment = "Gift Card";
-			//TODO Update Database
+			
 			
 		}
 		else if (type == 2){
 			//Cash Payment 			
-			processingLabel.setText("Processing Cash Transaction");
 			payment = "Cash";
-			//TODO Update Database
+			
 		}
 		
+		final JFrame f = new JFrame();
+	    f.setDefaultCloseOperation(JFrame.EXIT_ON_CLOSE);
+	    Container content = f.getContentPane();
+	    final JProgressBar progressBar = new JProgressBar();
+	    
+	    progressBar.setStringPainted(true);
+	    Border border = BorderFactory.createTitledBorder("Processing...");
+	    progressBar.setBorder(border);
+	    content.add(progressBar, BorderLayout.NORTH);
+	    f.setSize(300, 100);
+	    f.setVisible(true);
+	    progressBar.setValue(100);
 		//Get items ordered 
 		for (int i = 0; i < orderNames.size(); i++){
-			order += "'" + orderNames.get(i) + "'";
+			order += orderNames.get(i);
+			if (i != orderNames.size() - 1){
+				//if this isn't the last item, add a comma to the string
+				order += ",";
+			}
 		}
 		
 		System.out.println("Order Total: " + Double.parseDouble(String.format("%.2f", getOrderTotal())));
+		double orderTotal = Double.parseDouble(String.format("%.2f", getOrderTotal()));
+		
 		System.out.println("Order: " + order);
 		System.out.println("Time: " + epoch);
 		System.out.println("Payment: " + payment);
 		
-		orderNames.clear();
-		orderPrices.clear();
-		clearTable();
+		
+		final double orderTotalDB = orderTotal;
+		final String orderDB = order;
+		final long epochDB = epoch;
+		final String paymentDB = payment;
+		
+		SwingUtilities.invokeLater(new Runnable(){
+			public void run(){
+				DatabaseManager.addTransaction(orderTotalDB, orderDB, epochDB, paymentDB);
+				clearTable();
+				orderFrame.dispose();
+				orderNames.clear();
+				orderPrices.clear();
+				f.dispose();
+			}
+		});
 		
 		
-		processingFrame.dispose();
-		orderFrame.dispose();
+		System.out.println("Cleared Table and orderFrame");	
 		
+		//processingFrame.dispose();
+		//Update the database from here 
+		
+
+
+	}
+	public static void disableAllButtons(){
+		for (int i = 0; i < buttons.size(); i++){
+			buttons.get(i).setEnabled(false);
+			System.out.println(buttons.get(i).isEnabled());
+		}
+	}
+	public static void enableAllButtons(){
+		for (int i = 0; i < buttons.size(); i++){
+			buttons.get(i).setEnabled(true);
+			System.out.println(buttons.get(i).isEnabled());
+		}
 	}
 	
 

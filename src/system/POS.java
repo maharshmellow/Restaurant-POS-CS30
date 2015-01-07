@@ -1,5 +1,7 @@
 package system;
 
+import javax.swing.SwingUtilities;
+
 import items.*;
 import people.*;
 
@@ -27,8 +29,13 @@ public class POS {
 		System.out.println("Login Screen");
 		
 		loginManager = new LoginManager();
-		loginManager.showLoginScreen();	
 		
+		//loginManager.showLoginScreen();	
+		SwingUtilities.invokeLater(new Runnable(){
+			public void run(){
+				loginManager.showLoginScreen();
+			}
+		});
 		
 		
 	}
